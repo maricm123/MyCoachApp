@@ -2,7 +2,7 @@ superuser credentials:
 mihailomaric001@gmail.com
 mihailo
 
-*06.08.2022
+*06.08.2023
 - stao na 14 minutu https://www.youtube.com/watch?v=NmQyX1D5hqo&list=PLpyspNLjzwBlobEvnZzyWP8I-ORQcq4IO&index=3
 
 - nastaviti sa kreiranjem user modela (pokusati do kraja odraditi temeljno da se posle ne menja)
@@ -10,3 +10,6 @@ mihailo
 - setovati neke osnovne Vue stranice
 
 *ovo je sve za sledeci put
+
+
+*11.08.2023
