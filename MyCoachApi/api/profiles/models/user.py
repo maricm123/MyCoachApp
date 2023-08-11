@@ -3,12 +3,12 @@ from django.db import models
 from django.utils import timezone
 
 class CustomUserManager(UserManager):
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, name, email, password, **extra_fields):
         if not email:
             raise ValueError("You have not provided a valid e-mail address")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email, name=name, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 

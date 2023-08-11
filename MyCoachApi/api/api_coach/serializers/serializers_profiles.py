@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+# from ...profiles.models.client import Client
+from profiles.models.client import Client
 User = get_user_model()
 
 
@@ -34,3 +35,17 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+
+class ClientSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  # Nested UserSerializer
+
+    class Meta:
+        model = Client
+        fields = ['user']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')  # Extract user data
+        print(user_data)
+        user = UserSerializer().create(user_data)  # Create user instance
+        client = Client.objects.create(user=user, **validated_data)
+        return client

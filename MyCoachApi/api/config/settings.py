@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'profiles.apps.ProfilesConfig',
-    # 'tweet.apps.TweetConfig'
 ]
 
 MIDDLEWARE = [
