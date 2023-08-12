@@ -2,7 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from ..serializers.serializers_profiles import CustomTokenObtainPairSerializer, UserSerializer, ClientSerializer
+from ..serializers.serializers_profiles import CustomTokenObtainPairSerializer, CoachSerializer, \
+    ClientSerializer
 
 User = get_user_model()
 
@@ -19,9 +20,23 @@ class UserLoginView(TokenObtainPairView):
 
         return Response(serializer.validated_data)
 
-class ClientUserRegisterView(generics.CreateAPIView):
+
+class CoachRegisterView(generics.CreateAPIView):
     """
-    View to handle registration of Business Users.
+    View to handle registration of Users.
+    """
+    serializer_class = CoachSerializer
+
+    def perform_create(self, serializer):
+        # Call the default perform_create() method to handle user registration
+        user = serializer.save()
+        # Return a response indicating successful registration
+        return Response({'message': 'User registered successfully.'})
+
+
+class ClientRegisterView(generics.CreateAPIView):
+    """
+    View to handle registration of Users.
     """
     serializer_class = ClientSerializer
 
@@ -29,4 +44,4 @@ class ClientUserRegisterView(generics.CreateAPIView):
         # Call the default perform_create() method to handle user registration
         user = serializer.save()
         # Return a response indicating successful registration
-        return Response({'message': 'User registered successfully. Please check your email for confirmation.'})
+        return Response({'message': 'User registered successfully.'})

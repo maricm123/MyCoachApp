@@ -13,3 +13,11 @@ mihailo
 
 
 *11.08.2023
+*12.08.2023
+- nastaviti sa registracijom coacha
+- sve to uspostaviti na frontu sa tailwindom
+
+- dalji rad 
+	- napisati model za plan treninga i povezati sa userom (kao tweet i user)
+	- dovesti to sve na dashboard
+	- resiti problem sa stateom - ne iscitava rolu kad se refreshuje
