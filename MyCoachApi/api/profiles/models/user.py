@@ -57,7 +57,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_coach(self):
         return self.role == self.COACH
 
-
     # def get_avatar(self):
     #     if self.avatar:
     #         return settings.WEBSITE_URL + self.avatar.url

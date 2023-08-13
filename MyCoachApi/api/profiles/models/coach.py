@@ -13,7 +13,6 @@ class Coach(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        verbose_name=SportCategory._meta.verbose_name,
     )
 
     def __str__(self):

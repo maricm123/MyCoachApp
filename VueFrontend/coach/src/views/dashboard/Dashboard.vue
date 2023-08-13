@@ -38,10 +38,7 @@
         </div>-->
         <br />
       </div>
-      <div v-else>
-        You need to sign up to add your tweet.
-        If you already have an account login
-      </div>
+      <div v-else>NotAuth</div>
     </div>
   </div>
 </template>
