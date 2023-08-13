@@ -29,5 +29,9 @@ export default {
 };
 </script>
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 @import "../node_modules/bulma";
+body {
+  font-family: "Lato", sans-serif;
+}
 </style>

@@ -1,42 +1,50 @@
 <template>
   <div class="container">
     <div class="columns is-multiline">
-      <div
-        v-if="$store.state.isAuthenticated && $store.state.role == 'coach'"
-        class="column is full"
-      >
-        <button class="button is-gray">
+      <div v-if="$store.state.isAuthenticated" class="column is full">
+        <!-- <button class="button is-gray">
           <router-link to="/dashboard/add-tweet">Add your training plan</router-link>
-        </button>
+        </button>-->
         <div class="column is-full">
           <h1 class="title">Training plans</h1>
         </div>
 
-        <!-- <div class="card" v-for="tweet in tweets" v-bind:key="tweet.id">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-48x48">
-                  <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
-                </figure>
-              </div>
-              <div class="media-content">
-                <p class="title is-4">{{tweet.user.username}}</p>
-                <p class="subtitle is-6">{{tweet.user.email}}</p>
-              </div>
+        <div class="program" v-for="program in programs" v-bind:key="program.id">
+          <div class="card">
+            <div class="card-content">
+              <div class="content">{{program.name}}</div>
             </div>
-
-            <div class="content">
-              {{tweet.text}}
-              <br />
-              <time>{{tweet.created_at}}</time>
-            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Buy</a>
+            </footer>
+            <nav class="level is-mobile">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Coach</p>
+                  <p class="title">{{program.coach}}</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Price</p>
+                  <p class="title">{{program.price}}</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Followers</p>
+                  <p class="title">456K</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Likes</p>
+                  <p class="title">789</p>
+                </div>
+              </div>
+            </nav>
           </div>
-          <button class="button is-black" style="font-color: white">
-            <router-link :to="{ name: 'TweetDetail', params: { id: tweet.id }}">Details</router-link>
-          </button>
-        </div>-->
-        <br />
+        </div>
       </div>
       <div v-else>NotAuth</div>
     </div>
@@ -49,29 +57,49 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      tweets: []
+      programs: []
     };
   },
   mounted() {
-    // this.getTweets();
+    this.getTweets();
   },
   methods: {
-    // async getTweets() {
-    //   this.$store.commit("setIsLoading", true);
-    //   axios
-    //     .get("/api/tweets-dashboard/", {
-    //       headers: { Authorization: `Bearer ${this.$store.state.token}` }
-    //     })
-    //     .then(response => {
-    //       this.tweets = response.data;
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //   this.$store.commit("setIsLoading", false);
-    // }
+    async getTweets() {
+      this.$store.commit("setIsLoading", true);
+      axios
+        .get("/api_coach/program/", {
+          headers: { Authorization: `Bearer ${this.$store.state.access}` }
+        })
+        .then(response => {
+          this.programs = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      this.$store.commit("setIsLoading", false);
+    }
   }
 };
 </script>
 <style scoped>
+.program {
+  margin: 20px;
+}
+
+.level {
+  padding: 10px;
+}
+
+.card-footer {
+  background-color: blue;
+  color: white;
+}
+.card-footer-item {
+  color: white;
+  font-size: 23px;
+}
+
+.content {
+  font-size: 23px;
+}
 </style>
