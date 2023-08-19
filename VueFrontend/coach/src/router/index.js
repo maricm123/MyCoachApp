@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import CoachSignUp from "../views/coach/CoachSignUp.vue";
 import ClientSignUp from "../views/client/ClientSignUp.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
-import TweetDetail from "../views/dashboard/TweetDetail.vue";
+import TrainingDetail from "../views/dashboard/TrainingDetail.vue";
 import AddTweet from "../views/dashboard/AddTweet.vue";
 import MyUserProfile from "../views/dashboard/MyUserProfile.vue";
 import UserProfile from "../views/dashboard/UserProfile.vue";
@@ -41,11 +41,11 @@ const routes = [
     name: "forgot-password",
     component: ForgotPassword,
   },
-  {
-    path: "/reset-password/:uid/:token",
-    name: "reset-password",
-    component: ResetPassword,
-  },
+  // {
+  //   path: "/reset-password/:uid/:token",
+  //   name: "reset-password",
+  //   component: ResetPassword,
+  // },
   {
     path: "/dashboard/my-user-profile",
     name: "my-user-profile",
@@ -55,39 +55,39 @@ const routes = [
     }
   },
   {
-    path: '/dashboard/tweet/:id',
-    name: 'TweetDetail',
-    component: TweetDetail,
+    path: '/dashboard/training/:id',
+    name: 'TrainingDetail',
+    component: TrainingDetail,
   },
-  {
-    path: '/dashboard/add-tweet/',
-    name: 'AddTweet',
-    component: AddTweet,
-    meta: {
-      requireLogin: true
-    }
-  },
-  {
-    path: '/dashboard/user-profile/:id',
-    name: 'UserProfile',
-    component: UserProfile,
-    meta: {
-      requireLogin: true
-    }
-  },
-  {
-    path: '/dashboard/my-user-profile/edit/:id',
-    name: 'EditUserProfile',
-    component: EditUserProfile,
-    meta: {
-      requireLogin: true
-    }
-  },
-  {
-    path: '/confirmation/:token',
-    name: 'ConfirmAccount',
-    component: ConfirmAccount,
-  },
+  // {
+  //   path: '/dashboard/add-tweet/',
+  //   name: 'AddTweet',
+  //   component: AddTweet,
+  //   meta: {
+  //     requireLogin: true
+  //   }
+  // },
+  // {
+  //   path: '/dashboard/user-profile/:id',
+  //   name: 'UserProfile',
+  //   component: UserProfile,
+  //   meta: {
+  //     requireLogin: true
+  //   }
+  // },
+  // {
+  //   path: '/dashboard/my-user-profile/edit/:id',
+  //   name: 'EditUserProfile',
+  //   component: EditUserProfile,
+  //   meta: {
+  //     requireLogin: true
+  //   }
+  // },
+  // {
+  //   path: '/confirmation/:token',
+  //   name: 'ConfirmAccount',
+  //   component: ConfirmAccount,
+  // },
 ];
 
 const router = createRouter({

@@ -6,11 +6,11 @@
         <button class="button" @click="editUser">Edit profile</button>
         <button @click="logout()" class="button is-danger">Log out</button>
         <button class="button is-light">
-          <router-link to="/dashboard/add-tweet">Add your tweet</router-link>
+          <!-- <router-link to="/dashboard/add-tweet">Add your tweet</router-link> -->
         </button>
       </div>
 
-      <div class="card" v-for="tweet in tweets" v-bind:key="tweet.id">
+      <div class="card" v-for="program in programs" v-bind:key="program.id">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
@@ -19,23 +19,23 @@
               </figure>
             </div>
             <div class="media-content">
-              <p class="title is-4">{{tweet.user.username}}</p>
-              <p class="subtitle is-6">{{tweet.user.email}}</p>
+              <p class="title is-4">{{program.name}}</p>
+              <!-- <p class="subtitle is-6">{{tweet.user.email}}</p> -->
             </div>
           </div>
 
           <div class="content">
-            {{tweet.text}}
+            {{program.price}}
             <br />
-            <time>{{tweet.created_at}}</time>
+            <time>{{program.created_at}}</time>
           </div>
         </div>
         <button class="button is-black" style="font-color: white">
-          <router-link :to="{ name: 'TweetDetail', params: { id: tweet.id }}">Details</router-link>
+          <router-link :to="{ name: 'TrainingDetail', params: { id: program.id }}">Details</router-link>
         </button>
       </div>
     </div>
-    <div class="container">
+    <!-- <div class="container">
       <div class="columns">
         <div class="column">
           <h2 class="title is-4">Followers:</h2>
@@ -68,7 +68,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -77,12 +77,12 @@ export default {
   name: "MyUserProfile",
   data() {
     return {
-      tweets: [],
+      programs: [],
       currentUser: null,
-      email: null,
-      followers: [],
-      followingList: [],
-      followRequest: []
+      email: null
+      // followers: [],
+      // followingList: [],
+      // followRequest: []
     };
   },
   created() {
@@ -90,16 +90,16 @@ export default {
       // Do something with the current user data
       this.currentUser = currentUser;
       this.email = currentUser.email;
-      this.privacy = currentUser.account_status;
+      // this.privacy = currentUser.account_status;
     });
-    this.getFollowers();
+    // this.getFollowers();
   },
   methods: {
     async logout() {
       const refresh = localStorage.getItem("refresh");
       await axios
         .post(
-          "/api/logout/",
+          "/api_coach/logout/",
           { refresh },
           {
             headers: { Authorization: `Bearer ${this.$store.state.access}` }
@@ -109,6 +109,7 @@ export default {
           console.log("Logged out");
         })
         .catch(error => {
+          console.log("ERROR");
           console.log(JSON.stringify(error));
         });
       this.$store.commit("removeAccess");
@@ -119,78 +120,79 @@ export default {
 
       this.$router.push("/login");
     },
-    async getUserTweets() {
+    async getUserTrainings() {
       await axios
-        .get("/api/tweets-by-me/", {
+        .get("/api_coach/programs-by-me/", {
           headers: { Authorization: `Bearer ${this.$store.state.access}` }
         })
         .then(response => {
-          this.tweets = response.data;
-        });
-    },
-    async editUser() {
-      // Navigate to the tweet update page
-      this.$router.push(
-        `/dashboard/my-user-profile/edit/${this.currentUser.id}/`
-      );
-    },
-    async getFollowers() {
-      await axios
-        .get("/api/following-list/", {
-          headers: { Authorization: `Bearer ${this.$store.state.access}` }
-        })
-        .then(response => {
-          this.followingList = response.data;
-        });
-      await axios
-        .get("/api/followers-list/", {
-          headers: { Authorization: `Bearer ${this.$store.state.access}` }
-        })
-        .then(response => {
-          this.followers = response.data;
-        });
-      await axios
-        .get("/api/follow-request-list/", {
-          headers: { Authorization: `Bearer ${this.$store.state.access}` }
-        })
-        .then(response => {
-          this.followRequest = response.data;
-        });
-    },
-    async acceptFollow(follow_request_id) {
-      console.log(follow_request_id);
-      console.log("accept");
-      await axios
-        .post(
-          `/api/follow-request-action/1/${follow_request_id}/`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${this.$store.state.access}` }
-          }
-        )
-        .then(response => {
-          console.log(response.data);
-        });
-    },
-    async rejectFollow(follow_request_id) {
-      console.log("reject");
-      console.log(follow_request_id);
-      await axios
-        .post(
-          `/api/follow-request-action/2/${follow_request_id}/`,
-          {},
-          {
-            headers: { Authorization: `Bearer ${this.$store.state.access}` }
-          }
-        )
-        .then(response => {
-          console.log(response.data);
+          this.programs = response.data;
+          console.log(this.programs);
         });
     }
+    // async editUser() {
+    //   // Navigate to the tweet update page
+    //   this.$router.push(
+    //     `/dashboard/my-user-profile/edit/${this.currentUser.id}/`
+    //   );
+    // }
+    // async getFollowers() {
+    //   await axios
+    //     .get("/api/following-list/", {
+    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
+    //     })
+    //     .then(response => {
+    //       this.followingList = response.data;
+    //     });
+    //   await axios
+    //     .get("/api/followers-list/", {
+    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
+    //     })
+    //     .then(response => {
+    //       this.followers = response.data;
+    //     });
+    //   await axios
+    //     .get("/api/follow-request-list/", {
+    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
+    //     })
+    //     .then(response => {
+    //       this.followRequest = response.data;
+    //     });
+    // },
+    // async acceptFollow(follow_request_id) {
+    //   console.log(follow_request_id);
+    //   console.log("accept");
+    //   await axios
+    //     .post(
+    //       `/api/follow-request-action/1/${follow_request_id}/`,
+    //       {},
+    //       {
+    //         headers: { Authorization: `Bearer ${this.$store.state.access}` }
+    //       }
+    //     )
+    //     .then(response => {
+    //       console.log(response.data);
+    //     });
+    // },
+    // async rejectFollow(follow_request_id) {
+    //   console.log("reject");
+    //   console.log(follow_request_id);
+    //   await axios
+    //     .post(
+    //       `/api/follow-request-action/2/${follow_request_id}/`,
+    //       {},
+    //       {
+    //         headers: { Authorization: `Bearer ${this.$store.state.access}` }
+    //       }
+    //     )
+    //     .then(response => {
+    //       console.log(response.data);
+    //     });
+    // }
   },
 
   mounted() {
-    this.getUserTweets();
+    this.getUserTrainings();
   }
 };
 </script>

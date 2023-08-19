@@ -8,20 +8,22 @@
         <div class="column is-full">
           <h1 class="title">Training plans</h1>
         </div>
-
         <div class="program" v-for="program in programs" v-bind:key="program.id">
           <div class="card">
             <div class="card-content">
               <div class="content">{{program.name}}</div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Buy</a>
+              <router-link
+                class="card-footer-item"
+                :to="{ name: 'TrainingDetail', params: { id: program.id }}"
+              >Subscribe</router-link>
             </footer>
             <nav class="level is-mobile">
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Coach</p>
-                  <p class="title">{{program.coach}}</p>
+                  <p class="title">{{program.coach.user.name}}</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -61,10 +63,10 @@ export default {
     };
   },
   mounted() {
-    this.getTweets();
+    this.getPrograms();
   },
   methods: {
-    async getTweets() {
+    async getPrograms() {
       this.$store.commit("setIsLoading", true);
       axios
         .get("/api_coach/program/", {
@@ -72,6 +74,7 @@ export default {
         })
         .then(response => {
           this.programs = response.data;
+          console.log(this.programs);
         })
         .catch(error => {
           console.log(error);

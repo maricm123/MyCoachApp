@@ -4,7 +4,16 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # from ...profiles.models.client import Client
 from profiles.models.client import Client
 from profiles.models.coach import Coach
+
+from profiles.models.sport_category import SportCategory
+
 User = get_user_model()
+
+
+class SportCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SportCategory
+        fields = '__all__'
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -41,10 +50,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CoachSerializer(serializers.ModelSerializer):
     user = UserSerializer()  # Nested UserSerializer
+    sport_category = SportCategorySerializer()
 
     class Meta:
         model = Coach
-        fields = ['user',]
+        fields = ['user', 'biography', 'sport_category',]
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

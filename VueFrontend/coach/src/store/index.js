@@ -55,7 +55,7 @@ export default createStore({
       }
 
       // Make the API request to get the current user
-      const response = await axios.get("/api/current-user/", {
+      const response = await axios.get("/api_coach/current-user/", {
         headers: { Authorization: `Bearer ${state.access}` }
       });
 

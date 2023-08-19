@@ -18,6 +18,15 @@ mihailo
 - sve to uspostaviti na frontu sa tailwindom
 
 - dalji rad 
-	- napisati model za plan treninga i povezati sa userom (kao tweet i user)
-	- dovesti to sve na dashboard
-	- resiti problem sa stateom - ne iscitava rolu kad se refreshuje
+	- napisati model za plan treninga i povezati sa userom (kao tweet i user) - DONE
+	- dovesti to sve na dashboard - DONE
+	- resiti problem sa stateom - ne iscitava rolu kad se refreshuje - nastaviti ovo, stao sam kod toga da pokrecem twitter projekat da vidim sta se tamo desava u state-u
+
+19.08
+- detalji plana treninga (back and front) - kada klikne na details sa dashboarda - DONE
+- currentUser namestiti - DONE
+
+- istraziti Stripe dokumentaciju
+
+- kucati dalje modele za payment proces (Payment, Order, Order Item...)
+

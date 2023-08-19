@@ -13,6 +13,15 @@ urlpatterns = [
     path('user/login/', views_profiles.UserLoginView.as_view(), name='user_login'),
     path('coach/register/', views_profiles.CoachRegisterView.as_view(), name='coach_register'),
     path('client/register/', views_profiles.ClientRegisterView.as_view(), name='client_register'),
+    path('current-user/', views_profiles.CurrentUserView.as_view(),
+             name='current-user'),
+
+    path('logout/', views_profiles.LogoutView.as_view(), name='logout'),
+    path('my-profile/<int:pk>/',
+         views_profiles.MyProfileView.as_view(), name='my_profile'),
+
     # TRAINING PROGRAMS
     path('program/', views_programs.TrainingProgramView.as_view(), name='training_program'),
+    path('program/<int:pk>/', views_programs.TrainingProgramDetail.as_view(), name='training-detail'),
+    path('programs-by-me/', views_programs.TrainingListByMe.as_view(), name='trainings-by-me'),
 ]
