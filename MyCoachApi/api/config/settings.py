@@ -12,10 +12,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
-
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()  # take environment variables from .env.
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'profiles.apps.ProfilesConfig',
     'trainingProgram.apps.TrainingprogramConfig',
+    'subscription.apps.SubscriptionConfig',
 ]
 
 MIDDLEWARE = [
@@ -178,3 +180,16 @@ AUTH_USER_MODEL = "profiles.User"
 # settings.py
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+####################################################################################################
+# Stripe (payment)
+####################################################################################################
+
+STRIPE_SECRET_KEY = os.environ["DJ_STRIPE_SECRET_KEY"]
+STRIPE_PUBLISHABLE_KEY = os.environ["DJ_STRIPE_PUBLISHABLE_KEY"]
+STRIPE_WEBHOOK_SECRET = os.environ["STRIPE_WEBHOOK_SECRET"]
+
+#frontend
+SUBSCRIPTION_SUCCESS_URL = 'http://localhost:8080/dashboard/subscription/success/'
+SUBSCRIPTION_FAILED_URL = 'http://localhost:8080/dashboard/subscription/cancel/'

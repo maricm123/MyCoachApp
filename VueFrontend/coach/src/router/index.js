@@ -3,7 +3,9 @@ import CoachSignUp from "../views/coach/CoachSignUp.vue";
 import ClientSignUp from "../views/client/ClientSignUp.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
 import TrainingDetail from "../views/dashboard/TrainingDetail.vue";
-import AddTweet from "../views/dashboard/AddTweet.vue";
+import Subscription from "../views/subscription/Subscription.vue";
+import Cancel from "../views/subscription/Cancel.vue";
+import Success from "../views/subscription/Success.vue";
 import MyUserProfile from "../views/dashboard/MyUserProfile.vue";
 import UserProfile from "../views/dashboard/UserProfile.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
@@ -58,6 +60,21 @@ const routes = [
     path: '/dashboard/training/:id',
     name: 'TrainingDetail',
     component: TrainingDetail,
+  },
+  {
+    path: '/dashboard/subscribe',
+    name: 'Subscription',
+    component: Subscription,
+  },
+  {
+    path: '/dashboard/subscribe/cancel',
+    name: 'Cancel',
+    component: Cancel,
+  },
+  {
+    path: '/dashboard/subscribe/success',
+    name: 'Success',
+    component: Success,
   },
   // {
   //   path: '/dashboard/add-tweet/',

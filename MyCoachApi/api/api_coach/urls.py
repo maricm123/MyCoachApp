@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.urls import include, path
-from .views import views_profiles, views_programs
+from .views import views_profiles, views_programs, views_subscriptions
 app_name = "api_coach"
 
 urlpatterns = [
@@ -24,4 +24,9 @@ urlpatterns = [
     path('program/', views_programs.TrainingProgramView.as_view(), name='training_program'),
     path('program/<int:pk>/', views_programs.TrainingProgramDetail.as_view(), name='training-detail'),
     path('programs-by-me/', views_programs.TrainingListByMe.as_view(), name='trainings-by-me'),
+
+
+    # SUBSCRIPTIONS
+    path('create-subscription/', views_subscriptions.CreateSubscription.as_view(), name='create-subscription'),
+    path('webhook-test/' , views_subscriptions.WebHook.as_view()),
 ]

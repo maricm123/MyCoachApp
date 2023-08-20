@@ -1,0 +1,7 @@
+1.Stripe dashboard - pravim product  (ovo cu kasnije raditi kroz API kada se bude pravio program tr)
+
+2. Download StripeCLI za laksu upotrebu kroz terminal
+    - download latest windows file on GitHub
+    - unzip file and set Path in ENV variables to stripe.exe file
+
+    - stripe login

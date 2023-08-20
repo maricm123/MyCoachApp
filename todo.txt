@@ -28,5 +28,7 @@ mihailo
 
 - istraziti Stripe dokumentaciju
 
+- konfigurisati Stripe i ostale keyeve
+
 - kucati dalje modele za payment proces (Payment, Order, Order Item...)
 

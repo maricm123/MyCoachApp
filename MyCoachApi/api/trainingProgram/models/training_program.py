@@ -26,5 +26,17 @@ class TrainingProgram(models.Model):
         Client, blank=True, related_name='bought_programs'
     )
 
+    # MONTHLY = 'monthly'
+    # YEARLY = 'yearly'
+    # LIFETIME = 'lifetime'
+
+    # TYPE_SUB_CHOICES = [
+    #     (MONTHLY, 'Monthly'),
+    #     (YEARLY, 'Yearly'),
+    #     (LIFETIME, 'Lifetime'),
+    # ]
+    #
+    # type_subscription = models.CharField(max_length=10, choices=TYPE_SUB_CHOICES, default=MONTHLY)
+
     def __str__(self):
         return self.name
