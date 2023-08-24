@@ -27,9 +27,6 @@ SECRET_KEY = 'django-insecure-bxq!9091cz=g_t%b=3fx(iw0vde+%-=bx(n=0b!b6qr+0be+09
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -166,9 +163,12 @@ SIMPLE_JWT = {
     # "Bearer <Token>",
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-]
+
+ALLOWED_HOSTS=['*']
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8080",

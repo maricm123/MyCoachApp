@@ -26,9 +26,18 @@ mihailo
 - detalji plana treninga (back and front) - kada klikne na details sa dashboarda - DONE
 - currentUser namestiti - DONE
 
-- istraziti Stripe dokumentaciju
+- konfigurisati Stripe i ostale keyeve - DONE
 
-- konfigurisati Stripe i ostale keyeve
+
 
 - kucati dalje modele za payment proces (Payment, Order, Order Item...)
+- stao sam kod CORS errora koji se pojavljuje kada se subscribe (verovatno je problem na Beku)
+- nastaviti traziti konfiguraciju i subscribe clanke i repo
 
+
+21.08
+- napraviti Subscribe tabelu (videti da li treba jos nesto dodati)
+- napraviti CoachTransaction tabelu
+- dodati polja u User tabelu za stripe_customer_id (dodato u Client, ali proveriti sta nam treba ako Coach bude hteo da pravi Product na stripe, da li i njemu treba neki stripe_id)
+
+- nastaviti sa Viewom za CreateSubscribe i odraditi migracije za modele
