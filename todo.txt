@@ -36,8 +36,10 @@ mihailo
 
 
 21.08
-- napraviti Subscribe tabelu (videti da li treba jos nesto dodati)
-- napraviti CoachTransaction tabelu
-- dodati polja u User tabelu za stripe_customer_id (dodato u Client, ali proveriti sta nam treba ako Coach bude hteo da pravi Product na stripe, da li i njemu treba neki stripe_id)
+- napraviti Subscribe tabelu (videti da li treba jos nesto dodati) - DONE
+- napraviti CoachTransaction tabelu - DONE
+- dodati polja u User tabelu za stripe_customer_id (dodato u Client, ali proveriti sta nam treba ako Coach bude hteo da pravi Product na stripe, da li i njemu treba neki stripe_id) ?DONE?
 
-- nastaviti sa Viewom za CreateSubscribe i odraditi migracije za modele
+- nastaviti sa Viewom za CreateSubscribe
+
+- dovesti par produkata na dashboard sa price_id-em

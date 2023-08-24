@@ -38,19 +38,23 @@ export default {
   name: "Subscription",
   methods: {
     async submitSubscription(priceId) {
+      const program = {
+        price_id: this.text
+      };
       await axios
         .post("/api_coach/create-subscription/", priceId, {
-          headers: { "Content-Type": "application/json" }
+          headers: { Authorization: `Bearer ${this.$store.state.access}` }
         })
         .then(response => {
-          toast({
-            message: "The tweet was added",
-            type: "is-success",
-            dismissible: true,
-            pauseOnHover: true,
-            duration: 2000,
-            position: "bottom-right"
-          });
+          console.log(response.data);
+          // toast({
+          //   message: "The tweet was added",
+          //   type: "is-success",
+          //   dismissible: true,
+          //   pauseOnHover: true,
+          //   duration: 2000,
+          //   position: "bottom-right"
+          // });
           this.$router.push("/dashboard/");
         })
         .catch(error => {

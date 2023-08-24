@@ -26,6 +26,8 @@ class TrainingProgram(models.Model):
         Client, blank=True, related_name='bought_programs'
     )
 
+    price_id_stripe = models.CharField(max_length=100, blank=True, null=True)
+
     # MONTHLY = 'monthly'
     # YEARLY = 'yearly'
     # LIFETIME = 'lifetime'

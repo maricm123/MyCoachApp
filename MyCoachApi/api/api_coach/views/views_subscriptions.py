@@ -1,3 +1,5 @@
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
 import stripe
 from django.conf import settings
@@ -40,15 +42,18 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 #             raise err
 
 class CreateSubscription(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         print(request)
         client = request.user
-        program_id = request.data.get('price_id')
+        print(request.data, client)
+        # program_id = request.data.get('price_id')
 
-        print(client, program_id)
+        # print(client, program_id)
 
         # Fetch the program details
-        program = TrainingProgram.objects.get(pk=program_id)
+        # program = TrainingProgram.objects.get(pk=program_id)
 
         # Calculate the coach's share
         # coach_share_amount = (program.price * subscription.coach_share_percentage) / 100
