@@ -21,3 +21,6 @@ class CoachTransaction(models.Model):
     amount = models.IntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Subscription = {self.subscription} ----Coach - '{self.coach}' -Amount -'{self.amount}'"

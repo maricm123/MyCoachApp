@@ -1,11 +1,17 @@
+import stripe
+import json
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import stripe
 from django.conf import settings
-import json
 from django.http import JsonResponse
+from subscription.models.subscribe import Subscribe
+from subscription.models.coach_transaction import CoachTransaction
+
 from trainingProgram.models.training_program import TrainingProgram
+from profiles.models.client import Client
+
 
 FRONTEND_SUBSCRIPTION_SUCCESS_URL = settings.SUBSCRIPTION_SUCCESS_URL
 FRONTEND_SUBSCRIPTION_CANCEL_URL = settings.SUBSCRIPTION_FAILED_URL
@@ -45,42 +51,33 @@ class CreateSubscription(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        print(request)
-        client = request.user
-        print(request.data, client)
-        # program_id = request.data.get('price_id')
-
-        # print(client, program_id)
-
+        user = self.request.user
+        client = Client.objects.get(user=user)
+        price_id = request.data['price_id_stripe']
         # Fetch the program details
-        # program = TrainingProgram.objects.get(pk=program_id)
+        program = TrainingProgram.objects.get(price_id_stripe=price_id)
+        # Create a subscription in Stripe
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        subscription = stripe.Subscription.create(
+            customer=client.stripe_customer_id,
+            items=[{'price': program.price_id_stripe}],  # Assuming you have a Stripe Price ID for the program
 
-        # Calculate the coach's share
-        # coach_share_amount = (program.price * subscription.coach_share_percentage) / 100
-        #
-        # # Create a subscription in Stripe
-        # stripe.api_key = settings.STRIPE_SECRET_KEY
-        # subscription = stripe.Subscription.create(
-        #     customer=client.stripe_customer_id,
-        #     items=[{'price': program.stripe_price_id}],  # Assuming you have a Stripe Price ID for the program
-        # )
-        #
-        # # Save subscription details in your model
-        # subscription_instance = Subscription.objects.create(
-        #     client=client,
-        #     program=program,
-        #     coach_share_percentage=program.coach_share_percentage,
-        #     stripe_subscription_id=subscription.id,
-        #     status=subscription.status,
-        # )
-        #
-        # # Create a transaction record for the coach's share
-        # CoachTransaction.objects.create(
-        #     coach=program.coach,
-        #     amount=coach_share_amount,
-        #     subscription=subscription_instance,
-        # )
+        )
 
+        # Save subscription details in your model
+        subscription_instance = Subscribe.objects.create(
+            client=client,
+            training_program=program,
+            coach_share_percentage=program.coach_share_percentage,
+            stripe_subscription_id=subscription.id,
+            status=subscription.status,
+        )
+        # Create a transaction record for the coach's share
+        CoachTransaction.objects.create(
+            coach=program.coach,
+            amount=program.coach_share_percentage,
+            subscription=subscription_instance,
+        )
         return Response({'message': 'Subscription created successfully'})
 
 

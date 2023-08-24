@@ -58,19 +58,19 @@
             {{tweet.image}}-->
           </div>
         </div>
-        <!-- <div v-if="tweet.user.id !== currentUser.id">
-          <button @click="retweet(tweet.id)" class="button is-info">Retweet</button>
-        </div>-->
+        <div>
+          <button @click="subscribe(training.price_id_stripe)" class="button is-info">Subscribe</button>
+        </div>
       </div>
 
       <div class="column is-6">
         <div class="box">
           <h2 class="subtitle">Coached by</h2>
 
-          <p>
+          <!-- <p>
             <strong>Name:</strong>
             {{ training.coach.user.name }}
-          </p>
+          </p>-->
           <p>
             <strong>Email:</strong>
             {{ training.coach.user.email }}
@@ -106,18 +106,18 @@
         <button class="button is-info" @click="updateTweet">Update</button>
         <button class="button is-danger" @click="deleteTweet">Delete</button>
       </div>-->
-
+      <!-- 
       <div v-if="$store.state.isAuthenticated">
         <button
           class="button"
           :class="{ 'unlike': liked }"
           @click="likeTweet"
         >{{ liked ? 'Unlike' : 'Like' }}</button>
-      </div>
-      <div v-else>
+      </div>-->
+      <!-- <div v-else>
         You need to
         <a href>login</a> to like this tweet
-      </div>
+      </div>-->
       <!-- <div class="liked-by">Liked by: {{liked_by}}</div> -->
       <!-- <div>
         <p>Liked by:</p>
@@ -158,20 +158,30 @@ export default {
   },
   mounted() {},
   methods: {
-    // async retweet(original_tweet_id) {
-    //   await axios
-    //     .post(
-    //       `/api/retweet/${original_tweet_id}/`,
-    //       {},
-    //       {
-    //         headers: { Authorization: `Bearer ${this.$store.state.token}` }
-    //       }
-    //     )
-    //     .then(response => {
-    //       console.log(response.data);
-    //       this.$router.push("/dashboard/");
-    //     });
-    // },
+    async subscribe(price_id_stripe) {
+      const program = {
+        price_id_stripe: price_id_stripe
+      };
+      await axios
+        .post("/api_coach/create-subscription/", program, {
+          headers: { Authorization: `Bearer ${this.$store.state.access}` }
+        })
+        .then(response => {
+          console.log(response.data);
+          // toast({
+          //   message: "The tweet was added",
+          //   type: "is-success",
+          //   dismissible: true,
+          //   pauseOnHover: true,
+          //   duration: 2000,
+          //   position: "bottom-right"
+          // });
+          this.$router.push("/dashboard/");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     // async likeTweet() {
     //   if (
     //     Object.values(this.tweet.liked_by).includes(
@@ -229,7 +239,7 @@ export default {
         .get(`/api_coach/program/${trainingID}/`)
         .then(response => {
           this.training = response.data;
-          console.log(this.training);
+          console.log(this.training.name);
           this.training.user = response.data.user;
           // this.liked_by = response.data.liked_by;
           // if (this.tweet.is_retweet) {

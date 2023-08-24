@@ -10,5 +10,6 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingProgram
-        fields = ['id', 'name', 'price', 'pdf_file', 'text', 'created_at', 'clients', 'coach', 'sport_category',]
+        fields = ['id', 'name', 'price', 'pdf_file', 'text',
+                  'created_at', 'clients', 'coach', 'sport_category', 'price_id_stripe',]
 

@@ -24,3 +24,6 @@ class Subscribe(models.Model):
     stripe_subscription_id = models.CharField(blank=False, null=False)
 
     status = models.CharField(null=True, blank=True, max_length=100)
+
+    def __str__(self):
+        return f"{self.client} - {self.training_program}"

@@ -42,4 +42,8 @@ mihailo
 
 - nastaviti sa Viewom za CreateSubscribe
 
-- dovesti par produkata na dashboard sa price_id-em
+- dovesti par produkata na dashboard sa price_id-em - DONE
+
+- Customer na Stripe (Client na projektu) moram imati njegov stripe_customer_id
+	znaci pre nego sto se napravi subscribe proveriti da li taj customer postoji, ako ne, pravim novi
+- isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd)

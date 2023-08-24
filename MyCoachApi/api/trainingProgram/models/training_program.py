@@ -28,6 +28,8 @@ class TrainingProgram(models.Model):
 
     price_id_stripe = models.CharField(max_length=100, blank=True, null=True)
 
+    coach_share_percentage = models.PositiveIntegerField(default=70)
+
     # MONTHLY = 'monthly'
     # YEARLY = 'yearly'
     # LIFETIME = 'lifetime'

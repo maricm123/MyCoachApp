@@ -31,7 +31,6 @@
 </template>
 
 <script>
-// import { API_URL } from "@/Config/config"; // Adjust the import path based on your project structure
 import axios from "axios";
 
 export default {
