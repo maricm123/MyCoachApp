@@ -40,10 +40,21 @@ mihailo
 - napraviti CoachTransaction tabelu - DONE
 - dodati polja u User tabelu za stripe_customer_id (dodato u Client, ali proveriti sta nam treba ako Coach bude hteo da pravi Product na stripe, da li i njemu treba neki stripe_id) ?DONE?
 
-- nastaviti sa Viewom za CreateSubscribe
+- nastaviti sa Viewom za CreateSubscribe - DONE
 
 - dovesti par produkata na dashboard sa price_id-em - DONE
 
-- Customer na Stripe (Client na projektu) moram imati njegov stripe_customer_id
-	znaci pre nego sto se napravi subscribe proveriti da li taj customer postoji, ako ne, pravim novi
+- Customer na Stripe (Client na projektu) - DONE
+(pravim customera na stripe-u odma na registraciji clienta...) - DONE
+- Ubaciti transakciju gde se pravi novi client i customer na stripe-u jer mora biti konzistentno - DONE
+
+
 - isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd)
+	proveriti da li treba PaymentMethod model za karticu kod Customera (Clienta)
+
+- Napraviti view koji dodaje novi Product (znaci kad coach kreira TrainingProgram automatski se kreira i na Stripe-u)
+
+**drzati jednostavnost i ne abstrakovati puno trenutno, nema potrebe (mozes samo fiju premestiti u drugi fajl i pojednostaviti)
+	ovu za kreiranje customera, a tako mozes i ostale
+
+

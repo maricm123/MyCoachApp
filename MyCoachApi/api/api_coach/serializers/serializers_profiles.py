@@ -68,7 +68,8 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['user',]
+        fields = ['user', 'stripe_customer_id',]
+        read_only_fields = ['stripe_customer_id',]
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

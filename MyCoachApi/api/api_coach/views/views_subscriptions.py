@@ -58,10 +58,12 @@ class CreateSubscription(APIView):
         program = TrainingProgram.objects.get(price_id_stripe=price_id)
         # Create a subscription in Stripe
         stripe.api_key = settings.STRIPE_SECRET_KEY
+
         subscription = stripe.Subscription.create(
             customer=client.stripe_customer_id,
             items=[{'price': program.price_id_stripe}],  # Assuming you have a Stripe Price ID for the program
-
+            cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
+            success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
         )
 
         # Save subscription details in your model

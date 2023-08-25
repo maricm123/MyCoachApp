@@ -1,6 +1,10 @@
+import json
+
+import stripe
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
-from rest_framework import generics, status
+from django.db import transaction
+from rest_framework import generics, status, request
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +14,7 @@ from ..serializers.serializers_profiles import CustomTokenObtainPairSerializer, 
     ClientSerializer, UserSerializer
 from profiles.models.coach import Coach
 from profiles.models.client import Client
+from django.conf import settings
 
 User = get_user_model()
 
@@ -46,9 +51,16 @@ class ClientRegisterView(generics.CreateAPIView):
     """
     serializer_class = ClientSerializer
 
+    @transaction.atomic
     def perform_create(self, serializer):
         # Call the default perform_create() method to handle user registration
-        user = serializer.save()
+        client = serializer.save()
+        try:
+            stripe_id = create_stripe_customer(client.user.email)
+            client.stripe_customer_id = stripe_id
+            client.save()
+        except Exception as e:
+            print(e)
         # Return a response indicating successful registration
         return Response({'message': 'User registered successfully.'})
 
@@ -121,3 +133,16 @@ class MyProfileView(generics.RetrieveUpdateAPIView):
         else:
             raise PermissionDenied(
                 "You do not have permission to update this user.")
+
+
+def create_stripe_customer(email):
+    try:
+        stripe.api_key = settings.STRIPE_SECRET_KEY  # Replace with your Stripe Secret Key
+        # Create a new customer object
+        customer = stripe.Customer.create(email=email)
+        return customer.id
+
+    except Exception as e:
+        print(e)
+        # Handle the exception if needed
+        return None
