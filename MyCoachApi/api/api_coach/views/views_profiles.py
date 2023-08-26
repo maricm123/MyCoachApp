@@ -33,7 +33,7 @@ class UserLoginView(TokenObtainPairView):
 
 class CoachRegisterView(generics.CreateAPIView):
     """
-    View to handle registration of Users.
+    View to handle registration of Coaches.
     """
     serializer_class = CoachSerializer
 
@@ -46,7 +46,7 @@ class CoachRegisterView(generics.CreateAPIView):
 
 class ClientRegisterView(generics.CreateAPIView):
     """
-    View to handle registration of Users.
+    View to handle registration of Clients.
     """
     serializer_class = ClientSerializer
 

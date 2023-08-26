@@ -51,15 +51,15 @@ mihailo
 
 
 (ovo zavrsiti danas) 26.08
-- Napraviti view koji dodaje novi Product (znaci kad coach kreira TrainingProgram automatski se kreira i na Stripe-u)
+- Napraviti view koji dodaje novi Product (znaci kad coach kreira TrainingProgram automatski se kreira i na Stripe-u) - DONE
 
+
+
+
+27.08
 -srediti kod
 **drzati jednostavnost i ne abstrakovati puno trenutno, nema potrebe (mozes samo fiju premestiti u drugi fajl i pojednostaviti)
 	ovu za kreiranje customera, a tako mozes i ostale
-
-
-
-
 
 - isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd)
 	proveriti da li treba PaymentMethod model za karticu kod Customera (Clienta)

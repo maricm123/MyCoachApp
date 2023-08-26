@@ -20,33 +20,6 @@ webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# class CreateSubscription(APIView):
-#     def post(self, request):
-#         """
-#             This API creates a subscription .
-#             :return: redirect to payment page .
-#         """
-#         try:
-#
-#             prices = stripe.Price.list(
-#                 # lookup_keys=[request.data['lookup_key']],
-#                 expand=['data.product']
-#             )
-#             checkout_session = stripe.checkout.Session.create(
-#                 line_items=[
-#                     {
-#                         'price': prices.data[0].id,
-#                         'quantity': 1
-#                     }
-#                 ],
-#                 mode='subscription',
-#                 success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,
-#                 cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL
-#             )
-#             return redirect(checkout_session.url, code=303)
-#         except Exception as err:
-#             raise err
-
 class CreateSubscription(APIView):
     permission_classes = [IsAuthenticated]
 

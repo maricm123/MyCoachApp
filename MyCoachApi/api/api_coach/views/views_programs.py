@@ -7,11 +7,9 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from stripe.error import StripeError
-
 from ..serializers.serializers_programs import TrainingProgramSerializer, TrainingProgramSerializerForCreate
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.coach import Coach
-
 from profiles.models.user import User
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -62,6 +60,10 @@ class TrainingProgramsListByUser(generics.ListAPIView):
 
 
 class TrainingProgramDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+        View to get details and update training program
+    """
+
     queryset = TrainingProgram.objects.all()
     serializer_class = TrainingProgramSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -84,7 +86,9 @@ class TrainingProgramDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class TrainingListByMe(generics.ListAPIView):
-    # User profile - tvitovi samo od usera koji je ulogovan
+    """
+        View to get just training list for logged coach
+    """
     serializer_class = TrainingProgramSerializer
     permission_classes = [IsAuthenticated]
 

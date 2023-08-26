@@ -4,33 +4,31 @@
       <div class="column is-12">
         <h1 class="title">User Profile - {{email}}</h1>
         <button class="button" @click="editUser">Edit profile</button>
-        <button @click="logout()" class="button is-danger">Log out</button>
         <button class="button is-light">
-          <!-- <router-link to="/dashboard/add-tweet">Add your tweet</router-link> -->
+          <router-link to="/dashboard/add-training-program">Add your training program</router-link>
         </button>
+        <button @click="logout()" class="button is-danger">Log out</button>
       </div>
-
+      <br />
       <div class="card" v-for="program in programs" v-bind:key="program.id">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
-              <figure class="image is-48x48">
+              <!-- <figure class="image is-48x48">
                 <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image" />
-              </figure>
-            </div>
-            <div class="media-content">
+              </figure>-->
               <p class="title is-4">{{program.name}}</p>
-              <!-- <p class="subtitle is-6">{{tweet.user.email}}</p> -->
             </div>
+            <div class="media-content"></div>
           </div>
 
-          <div class="content">
+          <!-- <div class="content">
             {{program.price}}
             <br />
             <time>{{program.created_at}}</time>
-          </div>
+          </div>-->
         </div>
-        <button class="button is-black" style="font-color: white">
+        <button class="button" style="font-color: white">
           <router-link :to="{ name: 'TrainingDetail', params: { id: program.id }}">Details</router-link>
         </button>
       </div>
@@ -127,7 +125,6 @@ export default {
         })
         .then(response => {
           this.programs = response.data;
-          console.log(this.programs);
         });
     }
     // async editUser() {
@@ -196,3 +193,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.card {
+  margin-top: 40px;
+}
+</style>
