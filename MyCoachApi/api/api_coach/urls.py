@@ -21,9 +21,12 @@ urlpatterns = [
          views_profiles.MyProfileView.as_view(), name='my_profile'),
 
     # TRAINING PROGRAMS
-    path('program/', views_programs.TrainingProgramView.as_view(), name='training_program'),
+    path('program/', views_programs.TrainingProgramView.as_view(), name='training-program'),
     path('program/<int:pk>/', views_programs.TrainingProgramDetail.as_view(), name='training-detail'),
     path('programs-by-me/', views_programs.TrainingListByMe.as_view(), name='trainings-by-me'),
+    path('create-program/', views_programs.TrainingProgramCreate.as_view(), name='create-program'),
+    # SPORT CATEGORIES
+    path('sport-categories/', views_profiles.SportCategoriesListView.as_view(), name='sport-categories'),
 
 
     # SUBSCRIPTIONS

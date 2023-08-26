@@ -13,3 +13,14 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'price', 'pdf_file', 'text',
                   'created_at', 'clients', 'coach', 'sport_category', 'price_id_stripe',]
 
+        read_only_fields = ['price_id_stripe',]
+
+
+class TrainingProgramSerializerForCreate(serializers.ModelSerializer):
+    # coach = CoachSerializer()
+    # sport_category = SportCategorySerializer()
+
+    class Meta:
+        model = TrainingProgram
+        fields = ['id', 'name', 'price', 'pdf_file', 'text', 'coach_share_percentage', 'sport_category',]
+        read_only_fields = ['price_id_stripe',]

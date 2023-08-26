@@ -3,10 +3,13 @@ import CoachSignUp from "../views/coach/CoachSignUp.vue";
 import ClientSignUp from "../views/client/ClientSignUp.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
 import TrainingDetail from "../views/dashboard/TrainingDetail.vue";
+import AddTrainingProgram from "../views/dashboard/AddTrainingProgram.vue";
+
 import Subscription from "../views/subscription/Subscription.vue";
 import Cancel from "../views/subscription/Cancel.vue";
 import Success from "../views/subscription/Success.vue";
 import MyUserProfile from "../views/dashboard/MyUserProfile.vue";
+
 import UserProfile from "../views/dashboard/UserProfile.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
@@ -76,14 +79,14 @@ const routes = [
     name: 'Success',
     component: Success,
   },
-  // {
-  //   path: '/dashboard/add-tweet/',
-  //   name: 'AddTweet',
-  //   component: AddTweet,
-  //   meta: {
-  //     requireLogin: true
-  //   }
-  // },
+  {
+    path: '/dashboard/add-training-program/',
+    name: 'AddTrainingProgram',
+    component: AddTrainingProgram,
+    meta: {
+      requireLogin: true
+    }
+  },
   // {
   //   path: '/dashboard/user-profile/:id',
   //   name: 'UserProfile',

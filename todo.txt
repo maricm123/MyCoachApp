@@ -49,12 +49,20 @@ mihailo
 - Ubaciti transakciju gde se pravi novi client i customer na stripe-u jer mora biti konzistentno - DONE
 
 
+
+(ovo zavrsiti danas) 26.08
+- Napraviti view koji dodaje novi Product (znaci kad coach kreira TrainingProgram automatski se kreira i na Stripe-u)
+
+-srediti kod
+**drzati jednostavnost i ne abstrakovati puno trenutno, nema potrebe (mozes samo fiju premestiti u drugi fajl i pojednostaviti)
+	ovu za kreiranje customera, a tako mozes i ostale
+
+
+
+
+
 - isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd)
 	proveriti da li treba PaymentMethod model za karticu kod Customera (Clienta)
 
-- Napraviti view koji dodaje novi Product (znaci kad coach kreira TrainingProgram automatski se kreira i na Stripe-u)
-
-**drzati jednostavnost i ne abstrakovati puno trenutno, nema potrebe (mozes samo fiju premestiti u drugi fajl i pojednostaviti)
-	ovu za kreiranje customera, a tako mozes i ostale
 
 

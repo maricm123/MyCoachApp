@@ -76,3 +76,9 @@ class ClientSerializer(serializers.ModelSerializer):
         user = UserSerializer().create(user_data)  # Create user instance
         client = Client.objects.create(user=user, **validated_data)
         return client
+
+
+class SportCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SportCategory
+        fields = '__all__'

@@ -1,5 +1,3 @@
-import json
-
 import stripe
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -11,9 +9,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from ..serializers.serializers_profiles import CustomTokenObtainPairSerializer, CoachSerializer, \
-    ClientSerializer, UserSerializer
+    ClientSerializer, UserSerializer, SportCategoriesSerializer
 from profiles.models.coach import Coach
 from profiles.models.client import Client
+from profiles.models.sport_category import SportCategory
 from django.conf import settings
 
 User = get_user_model()
@@ -146,3 +145,8 @@ def create_stripe_customer(email):
         print(e)
         # Handle the exception if needed
         return None
+
+
+class SportCategoriesListView(generics.ListAPIView):
+    serializer_class = SportCategoriesSerializer
+    queryset = SportCategory.objects.all()
