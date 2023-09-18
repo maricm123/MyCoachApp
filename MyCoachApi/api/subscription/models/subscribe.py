@@ -1,7 +1,5 @@
 from django.db import models
-
 from profiles.models.client import Client
-
 from trainingProgram.models.training_program import TrainingProgram
 
 

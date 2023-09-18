@@ -78,7 +78,7 @@ export default {
           localStorage.setItem("access", access);
           localStorage.setItem("refresh", refresh);
           localStorage.setItem("role", role);
-          this.$router.push("/dashboard/subscribe");
+          this.$router.push("/dashboard");
         })
         .catch(error => {
           if (error.response) {

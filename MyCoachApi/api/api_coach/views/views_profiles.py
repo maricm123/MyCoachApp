@@ -2,7 +2,7 @@ import stripe
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db import transaction
-from rest_framework import generics, status, request
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +14,7 @@ from profiles.models.coach import Coach
 from profiles.models.client import Client
 from profiles.models.sport_category import SportCategory
 from django.conf import settings
+from subscription.models.payment_method import PaymentMethod
 
 User = get_user_model()
 
@@ -46,7 +47,8 @@ class CoachRegisterView(generics.CreateAPIView):
 
 class ClientRegisterView(generics.CreateAPIView):
     """
-    View to handle registration of Clients.
+    View to handle registration of Clients
+    and create customer on Stripe
     """
     serializer_class = ClientSerializer
 
@@ -55,9 +57,12 @@ class ClientRegisterView(generics.CreateAPIView):
         # Call the default perform_create() method to handle user registration
         client = serializer.save()
         try:
+            # adding stripe_id to client
             stripe_id = create_stripe_customer(client.user.email)
             client.stripe_customer_id = stripe_id
             client.save()
+
+            create_stripe_card(stripe_id, token)
         except Exception as e:
             print(e)
         # Return a response indicating successful registration
@@ -145,6 +150,36 @@ def create_stripe_customer(email):
         print(e)
         # Handle the exception if needed
         return None
+
+
+def create_stripe_card(customer_stripe_id, token):
+    print(customer_stripe_id, token)
+    try:
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        # Create a payment method
+        stripe.PaymentMethod.create(
+            type="card",
+            card={
+                "number": "4242424242424242",
+                "exp_month": 12,
+                "exp_year": 2034,
+                "cvc": "314",
+            },
+        )
+        # payment_method = stripe.PaymentMethod.create(
+        #     type='card',
+        #     card={
+        #         'number': number,  # Replace with a valid card number
+        #         'exp_month': exp_month,
+        #         'exp_year': exp_year,
+        #         'cvc': cvc,
+        #     }
+        # )
+        print(card.id)
+        return card.id
+
+    except Exception as e:
+        print(e, "GRESKAA")
 
 
 class SportCategoriesListView(generics.ListAPIView):

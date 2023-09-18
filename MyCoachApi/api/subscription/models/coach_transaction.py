@@ -1,5 +1,4 @@
 from django.db import models
-
 from profiles.models.coach import Coach
 from .subscribe import Subscribe
 

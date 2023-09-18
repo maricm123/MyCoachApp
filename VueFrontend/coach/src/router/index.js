@@ -4,7 +4,7 @@ import ClientSignUp from "../views/client/ClientSignUp.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
 import TrainingDetail from "../views/dashboard/TrainingDetail.vue";
 import AddTrainingProgram from "../views/dashboard/AddTrainingProgram.vue";
-
+import CreatePaymentMethod from "../views/client/CreatePaymentMethod";
 import Subscription from "../views/subscription/Subscription.vue";
 import Cancel from "../views/subscription/Cancel.vue";
 import Success from "../views/subscription/Success.vue";
@@ -86,6 +86,11 @@ const routes = [
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: "/create-payment-method",
+    name: "CreatePaymentMethod",
+    component: CreatePaymentMethod,
   },
   // {
   //   path: '/dashboard/user-profile/:id',

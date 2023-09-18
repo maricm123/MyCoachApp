@@ -61,8 +61,27 @@ mihailo
 **drzati jednostavnost i ne abstrakovati puno trenutno, nema potrebe (mozes samo fiju premestiti u drugi fajl i pojednostaviti)
 	ovu za kreiranje customera, a tako mozes i ostale
 
-- isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd)
-	proveriti da li treba PaymentMethod model za karticu kod Customera (Clienta)
+- isto tako za Clienta dodati atribute koji trebaju za Customera na Stripe-u (payment method itd itd) - DONE
+	proveriti da li treba PaymentMethod model za karticu kod Customera (Clienta) - DONE
 
+- zavrsiti perform_create kod Clienta
+	dodati polje kod Clienta stripe_card_token (koje ce se generisati na frontu)
+	na osnovu tog prosledjenog tokena u funckiju create_stripe_card mi pravimo za tog odredjenog usera karticu
+	
+	posle videti da li storovati jos neki stripe_id kod clienta (vezano za karticu) verovatno ce trebati card_....
+
+
+
+- napraviti dashboard za subscriptionse kod Clienta na profilu
+	-dovesti subscribes od ulogovanog usera
+	-dozvoliti skidanje pdf file-a (prikazati pdf file)
+
+
+16.09.2023
+- nastaviti sa istrazivanjem kako treba da se kreira PaymentMethod na stripe i objekat na beku (da li na frontu pa slati id na bek itd itd) 
+ to sve implementirati kada se registruje klient (ili kreirati paymentMethod kada placa prvi subscribe???)
+
+
+17.09.2023
 
 
