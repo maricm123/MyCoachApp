@@ -83,5 +83,5 @@ mihailo
 
 
 17.09.2023
-
+- migrirati sa vue 3 na vue 2 zbog stripe elemenata
 
