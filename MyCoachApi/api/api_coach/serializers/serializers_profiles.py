@@ -1,9 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from profiles.models.client import Client
 from profiles.models.coach import Coach
 from profiles.models.sport_category import SportCategory
+
+from api_coach.shared_serializers import PaymentMethodSerializer
 
 User = get_user_model()
 
@@ -61,29 +64,18 @@ class CoachSerializer(serializers.ModelSerializer):
         return coach
 
 
-# class ClientSerializer(serializers.ModelSerializer):
-#     user = UserSerializer()  # Nested UserSerializer
-#     # stripe_card_token = serializers.CharField(max_length=100)
-#
-#     class Meta:
-#         model = Client
-#         fields = ['user', 'stripe_customer_id', ]
-#         read_only_fields = ['stripe_customer_id', ]
-#
-#     def create(self, validated_data):
-#         print(validated_data)
-#         user_data = validated_data.pop('user')
-#         user = UserSerializer().create(user_data)  # Create user instance
-#         client = Client.objects.create(user=user, **validated_data)
-#         return client
-
 class ClientSerializer(UserSerializer, serializers.Serializer):
+    @transaction.atomic
     def validate(self, data):
         user = User.objects.create_user(name=data["name"], email=data["email"], password=data["password"])
-        client = Client.objects.create(user=user)
+        client = Client.create(user=user)
         return client
+
 
 class SportCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = SportCategory
         fields = '__all__'
+
+
+

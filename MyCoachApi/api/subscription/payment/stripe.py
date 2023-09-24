@@ -13,8 +13,11 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # Customer
 
 
-def create_stripe_customer(metadata):
-    return stripe.Customer.create(metadata=metadata)
+def create_stripe_customer_id(email):
+    return stripe.Customer.create(email=email)
+
+# def create_stripe_customer(metadata):
+#     return stripe.Customer.create(metadata=metadata)
 
 
 def retrieve_stripe_customer(stripe_id):

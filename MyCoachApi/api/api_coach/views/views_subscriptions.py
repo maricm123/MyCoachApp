@@ -3,6 +3,7 @@ import json
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
@@ -12,12 +13,20 @@ from subscription.models.coach_transaction import CoachTransaction
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
 
 FRONTEND_SUBSCRIPTION_SUCCESS_URL = settings.SUBSCRIPTION_SUCCESS_URL
 FRONTEND_SUBSCRIPTION_CANCEL_URL = settings.SUBSCRIPTION_FAILED_URL
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+class AddPaymentMethodToClientView(APIView):
+    def post(self, request):
+        serializer = AddPaymentMethodToClientSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(status=HTTP_200_OK)
 
 
 class CreateSubscription(APIView):

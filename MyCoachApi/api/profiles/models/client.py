@@ -1,5 +1,7 @@
 from django.conf import settings
-from django.db import models
+from django.db import models, transaction
+
+from subscription.payment.stripe_handler import create_stripe_customer
 
 
 class Client(models.Model):
@@ -14,3 +16,16 @@ class Client(models.Model):
 
     def __str__(self):
         return self.user.name
+
+    @classmethod
+    @transaction.atomic
+    def create(cls, user):
+        """
+        Create a new Client instance linked to the provided user, and create
+            Customer on Stripe
+        """
+        client = cls(user=user)
+        stripe_customer_id = create_stripe_customer(email=user.email)
+        client.stripe_customer_id = stripe_customer_id
+        client.save()
+        return client

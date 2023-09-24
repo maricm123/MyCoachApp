@@ -83,5 +83,13 @@ mihailo
 
 
 17.09.2023
-- migrirati sa vue 3 na vue 2 zbog stripe elemenata
 
+24.09.2023
+- refaktorisao view i serializer za Clilent registraciju
+- radim na serializeru i view za kreiranje PaymentMethod objekta i attachovanje na Customera u Stripe-u
+
+???
+pravim dva endpointa, jedan je da Client sam doda svoju karticu (attachuje)
+drugi endpoint (vec ga imam) je subscribe, tu kreiram setupIntent (znaci dodajem i karticu na customera, tj kreiram sve) i 
+kreiram i subscribe i kao objekat i na Stripe
+???

@@ -30,6 +30,7 @@ urlpatterns = [
 
 
     # SUBSCRIPTIONS
+    path('add-payment-method-to-client/', views_subscriptions.AddPaymentMethodToClientView.as_view(), name='add-payment-method-to-client'),
     path('create-subscription/', views_subscriptions.CreateSubscription.as_view(), name='create-subscription'),
     path('webhook-test/' , views_subscriptions.WebHook.as_view()),
 ]
