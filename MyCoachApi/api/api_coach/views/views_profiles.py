@@ -5,6 +5,7 @@ from django.db import transaction
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -45,28 +46,34 @@ class CoachRegisterView(generics.CreateAPIView):
         return Response({'message': 'User registered successfully.'})
 
 
-class ClientRegisterView(generics.CreateAPIView):
-    """
-    View to handle registration of Clients
-    and create customer on Stripe
-    """
-    serializer_class = ClientSerializer
+class ClientRegisterView(APIView):
+    def post(self, request):
+        serializer = ClientSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(status=HTTP_200_OK)
 
-    @transaction.atomic
-    def perform_create(self, serializer):
-        # Call the default perform_create() method to handle user registration
-        client = serializer.save()
-        try:
-            # adding stripe_id to client
-            stripe_id = create_stripe_customer(client.user.email)
-            client.stripe_customer_id = stripe_id
-            client.save()
-
-            create_stripe_card(stripe_id, token)
-        except Exception as e:
-            print(e)
-        # Return a response indicating successful registration
-        return Response({'message': 'User registered successfully.'})
+# class ClientRegisterView(generics.CreateAPIView):
+#     """
+#     View to handle registration of Clients
+#     and create customer on Stripe
+#     """
+#     serializer_class = ClientSerializer
+#
+#     @transaction.atomic
+#     def perform_create(self, serializer):
+#         # Call the default perform_create() method to handle user registration
+#         client = serializer.save()
+#         try:
+#             # adding stripe_id to client
+#             stripe_id = create_stripe_customer(client.user.email)
+#             client.stripe_customer_id = stripe_id
+#             client.save()
+#
+#             create_stripe_card(stripe_id, token)
+#         except Exception as e:
+#             print(e)
+#         # Return a response indicating successful registration
+#         return Response({'message': 'User registered successfully.'})
 
 
 class CurrentUserView(generics.RetrieveAPIView):

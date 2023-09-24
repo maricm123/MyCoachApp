@@ -78,12 +78,10 @@ export default {
       if (!this.errors.length) {
         this.$store.commit("setIsLoading", true);
         const user = {
-          user: {
-            email: this.email,
-            name: this.name,
-            password: this.password,
-            role: this.role
-          }
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          role: this.role
         };
         await axios
           .post("http://127.0.0.1:8000/api_coach/client/register/", user)

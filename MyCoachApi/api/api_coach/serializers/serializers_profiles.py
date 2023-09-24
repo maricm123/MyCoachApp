@@ -61,22 +61,27 @@ class CoachSerializer(serializers.ModelSerializer):
         return coach
 
 
-class ClientSerializer(serializers.ModelSerializer):
-    user = UserSerializer()  # Nested UserSerializer
-    # stripe_card_token = serializers.CharField(max_length=100)
+# class ClientSerializer(serializers.ModelSerializer):
+#     user = UserSerializer()  # Nested UserSerializer
+#     # stripe_card_token = serializers.CharField(max_length=100)
+#
+#     class Meta:
+#         model = Client
+#         fields = ['user', 'stripe_customer_id', ]
+#         read_only_fields = ['stripe_customer_id', ]
+#
+#     def create(self, validated_data):
+#         print(validated_data)
+#         user_data = validated_data.pop('user')
+#         user = UserSerializer().create(user_data)  # Create user instance
+#         client = Client.objects.create(user=user, **validated_data)
+#         return client
 
-    class Meta:
-        model = Client
-        fields = ['user', 'stripe_customer_id', ]
-        read_only_fields = ['stripe_customer_id', ]
-
-    def create(self, validated_data):
-        print(validated_data)
-        user_data = validated_data.pop('user')
-        user = UserSerializer().create(user_data)  # Create user instance
-        client = Client.objects.create(user=user, **validated_data)
+class ClientSerializer(UserSerializer, serializers.Serializer):
+    def validate(self, data):
+        user = User.objects.create_user(name=data["name"], email=data["email"], password=data["password"])
+        client = Client.objects.create(user=user)
         return client
-
 
 class SportCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
