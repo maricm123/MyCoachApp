@@ -93,3 +93,5 @@ pravim dva endpointa, jedan je da Client sam doda svoju karticu (attachuje)
 drugi endpoint (vec ga imam) je subscribe, tu kreiram setupIntent (znaci dodajem i karticu na customera, tj kreiram sve) i 
 kreiram i subscribe i kao objekat i na Stripe
 ???
+
+- testirati kreiranje programa (da li kreira na Stripe-u kako treba, posle refaktorisanja)

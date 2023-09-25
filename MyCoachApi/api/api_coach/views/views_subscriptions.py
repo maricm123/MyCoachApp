@@ -9,14 +9,13 @@ from django.conf import settings
 from django.http import JsonResponse
 from subscription.models.subscribe import Subscribe
 from subscription.models.coach_transaction import CoachTransaction
-
+from subscription.payment.stripe_handler import create_subscription
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 
 from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
 
-FRONTEND_SUBSCRIPTION_SUCCESS_URL = settings.SUBSCRIPTION_SUCCESS_URL
-FRONTEND_SUBSCRIPTION_CANCEL_URL = settings.SUBSCRIPTION_FAILED_URL
+
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -38,15 +37,9 @@ class CreateSubscription(APIView):
         price_id = request.data['price_id_stripe']
         # Fetch the program details
         program = TrainingProgram.objects.get(price_id_stripe=price_id)
+        
         # Create a subscription in Stripe
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-
-        subscription = stripe.Subscription.create(
-            customer=client.stripe_customer_id,
-            items=[{'price': program.price_id_stripe}],  # Assuming you have a Stripe Price ID for the program
-            cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
-            success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
-        )
+        subscription = create_subscription(client, program)
 
         # Save subscription details in your model
         subscription_instance = Subscribe.objects.create(

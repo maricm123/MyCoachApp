@@ -2,7 +2,8 @@ from decimal import Decimal
 from typing import Dict
 import stripe
 from django.conf import settings
-
+FRONTEND_SUBSCRIPTION_SUCCESS_URL = settings.SUBSCRIPTION_SUCCESS_URL
+FRONTEND_SUBSCRIPTION_CANCEL_URL = settings.SUBSCRIPTION_FAILED_URL
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # NOTE: these methods are stripe wrappers to avoid repeat stripe calls.
@@ -10,15 +11,43 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 # That's why it's OK to NOT test them, as it would lead to testing stripe itself.
 # However, the methods that calls these methods should be tested extensively.
 
-# Customer
+###### Moje trenutno potrebne metode #########
+def create_stripe_product(name):
+    return stripe.Product.create(name=name)
+
+
+def create_stripe_price(price, product):
+    return stripe.Price.create(
+        unit_amount=price,
+        currency="usd",
+        product=product.id
+    )
+
+
+def attach_stripe_card(stripe_id, payment_method):
+    return stripe.PaymentMethod.attach(payment_method, customer=stripe_id)
 
 
 def create_stripe_customer_id(email):
     return stripe.Customer.create(email=email)
 
-# def create_stripe_customer(metadata):
-#     return stripe.Customer.create(metadata=metadata)
 
+def create_stripe_subscription(client, program):
+    return stripe.Subscription.create(
+            customer=client.stripe_customer_id,
+            items=[{'price': program.price_id_stripe}],  # Assuming you have a Stripe Price ID for the program
+            cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
+            success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
+    )
+
+
+
+
+
+
+
+
+# Customer
 
 def retrieve_stripe_customer(stripe_id):
     return stripe.Customer.retrieve(stripe_id)
@@ -43,33 +72,33 @@ def retrieve_stripe_payment_intent(intent_id):
     return stripe.PaymentIntent.retrieve(intent_id)
 
 
-def create_stripe_payment_intent(
-    stripe_id: str,
-    receipt_email: str,
-    amount: Decimal,
-    capture_method: str,
-    payment_method=None,
-    description=None,
-    save_card=False,
-):
-    """https://stripe.com/docs/api/payment_intents/create
-    This simple wrapper allow to abstract some attributes that should always stay the same
-    (eg. confirmation_method)
-    """
+# def create_stripe_payment_intent(
+#     stripe_id: str,
+#     receipt_email: str,
+#     amount: Decimal,
+#     capture_method: str,
+#     payment_method=None,
+#     description=None,
+#     save_card=False,
+# ):
+#     """https://stripe.com/docs/api/payment_intents/create
+#     This simple wrapper allow to abstract some attributes that should always stay the same
+#     (eg. confirmation_method)
+#     """
 
-    kwargs = dict(
-        amount=euros_to_cents(amount),
-        capture_method=capture_method,
-        currency="eur",
-        customer=stripe_id,
-        confirmation_method="automatic",
-        payment_method=payment_method,
-        receipt_email=receipt_email,
-        description=description,
-    )
-    if save_card:
-        kwargs["setup_future_usage"] = "off_session"
-    return stripe.PaymentIntent.create(**kwargs)
+#     kwargs = dict(
+#         amount=euros_to_cents(amount),
+#         capture_method=capture_method,
+#         currency="eur",
+#         customer=stripe_id,
+#         confirmation_method="automatic",
+#         payment_method=payment_method,
+#         receipt_email=receipt_email,
+#         description=description,
+#     )
+#     if save_card:
+#         kwargs["setup_future_usage"] = "off_session"
+#     return stripe.PaymentIntent.create(**kwargs)
 
 
 def capture_stripe_payment_intent(payment_intent_id):
@@ -85,10 +114,6 @@ def cancel_stripe_payment_intent(payment_intent_id):
 
 def get_stripe_cards(stripe_id):
     return stripe.PaymentMethod.list(customer=stripe_id, type="card")
-
-
-def attach_stripe_card(stripe_id, payment_method):
-    return stripe.PaymentMethod.attach(payment_method, customer=stripe_id)
 
 
 def retrieve_payment_method(payment_method):

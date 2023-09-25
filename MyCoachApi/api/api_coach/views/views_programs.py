@@ -6,11 +6,11 @@ from rest_framework import generics, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from stripe.error import StripeError
 from ..serializers.serializers_programs import TrainingProgramSerializer, TrainingProgramSerializerForCreate
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.coach import Coach
 from profiles.models.user import User
+from subscription.payment.stripe_handler import create_stripe_product_and_price
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -29,24 +29,14 @@ class TrainingProgramCreate(generics.CreateAPIView):
             try:
                 name = self.request.data['name']
                 price = self.request.data['price']
-                stripe_product = create_stripe_product(self, name, price)
+                stripe_product = create_stripe_product_and_price(self, name, price)
                 coach = Coach.objects.get(user=self.request.user)
                 serializer.save(coach=coach, price_id_stripe=stripe_product)
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-def create_stripe_product(self, name, price):
-    try:
-        product = stripe.Product.create(name=name)
-        price = stripe.Price.create(
-            unit_amount=price,
-            currency="usd",
-            product=product.id,
-        )
-        return product.id
-    except StripeError as e:
-        return Response({'error': str(e)}, status=400)
+
 
 
 class TrainingProgramsListByUser(generics.ListAPIView):

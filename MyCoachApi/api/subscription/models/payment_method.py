@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.db import transaction
+from subscription.payment.stripe_handler import create_payment_method, attach_stripe_card
 
 class PaymentMethod(models.Model):
     """
@@ -14,3 +15,42 @@ class PaymentMethod(models.Model):
 
     def __str__(self):
         return f"Card ending in {self.number[-4:]}"
+
+
+    @classmethod
+    @transaction.atomic
+    def create_payment_method(cls, number, exp_month, exp_year, cvc):
+        try:
+            # Create Stripe PaymentMethod
+            payment_method = create_payment_method()
+
+            # Create a PaymentMethod object in your Django model
+            payment_method_obj = cls(
+                type="card",
+                number=number,
+                exp_month=exp_month,
+                exp_year=exp_year,
+                cvc=cvc,
+            )
+            payment_method_obj.save()
+
+            return payment_method_obj
+
+        # except stripe.error.StripeError as e:
+        except Exception as e:
+            # Handle Stripe API errors here
+            print(f"Stripe error: {e}")
+            return None
+        
+    def attach_to_customer(self, customer_id):
+        try:
+            # Attach the PaymentMethod to the customer
+            attach = attach_stripe_card(customer_id, self)
+            print(attach)
+            return True
+
+        # except stripe.error.StripeError as e:
+        except Exception as e:
+            # Handle Stripe API errors here
+            print(f"Stripe error: {e}")
+            return False
