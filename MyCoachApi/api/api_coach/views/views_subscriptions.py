@@ -1,6 +1,5 @@
 import stripe
 import json
-
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
@@ -14,8 +13,6 @@ from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 
 from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
-
-
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY

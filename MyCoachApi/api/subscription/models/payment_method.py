@@ -1,6 +1,6 @@
 from django.db import models
 from django.db import transaction
-from subscription.payment.stripe_handler import create_payment_method, attach_stripe_card
+from subscription.payment.stripe_handler import create_payment_method
 
 class PaymentMethod(models.Model):
     """
@@ -19,10 +19,10 @@ class PaymentMethod(models.Model):
 
     @classmethod
     @transaction.atomic
-    def create_payment_method(cls, number, exp_month, exp_year, cvc):
+    def create(cls, customer_id, number, exp_month, exp_year, cvc):
         try:
             # Create Stripe PaymentMethod
-            payment_method = create_payment_method()
+            payment_method = create_payment_method(customer_id, number, exp_month, exp_year, cvc)
 
             # Create a PaymentMethod object in your Django model
             payment_method_obj = cls(
@@ -42,15 +42,15 @@ class PaymentMethod(models.Model):
             print(f"Stripe error: {e}")
             return None
         
-    def attach_to_customer(self, customer_id):
-        try:
-            # Attach the PaymentMethod to the customer
-            attach = attach_stripe_card(customer_id, self)
-            print(attach)
-            return True
+    # def attach_to_customer(self, customer_id):
+    #     try:
+    #         # Attach the PaymentMethod to the customer
+    #         attach = attach_stripe_card(customer_id, self)
+    #         print(attach)
+    #         return True
 
-        # except stripe.error.StripeError as e:
-        except Exception as e:
-            # Handle Stripe API errors here
-            print(f"Stripe error: {e}")
-            return False
+    #     # except stripe.error.StripeError as e:
+    #     except Exception as e:
+    #         # Handle Stripe API errors here
+    #         print(f"Stripe error: {e}")
+    #         return False

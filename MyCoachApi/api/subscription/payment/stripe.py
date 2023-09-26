@@ -24,10 +24,6 @@ def create_stripe_price(price, product):
     )
 
 
-def attach_stripe_card(stripe_id, payment_method):
-    return stripe.PaymentMethod.attach(payment_method, customer=stripe_id)
-
-
 def create_stripe_customer_id(email):
     return stripe.Customer.create(email=email)
 
@@ -39,6 +35,41 @@ def create_stripe_subscription(client, program):
             cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
             success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
     )
+
+
+def create_stripe_payment_method(card_number, exp_month, exp_year, cvc):
+    return stripe.PaymentMethod.create(
+        type='card',
+        card={
+            'number': card_number,
+            'exp_month': exp_month,
+            'exp_year': exp_year,
+            'cvc': cvc,
+        },
+    )
+
+
+def attach_stripe_payment_method(payment_method_id, customer_id):
+    return stripe.PaymentMethod.attach(
+        payment_method_id,
+        customer=customer_id,
+    )
+
+
+def list_stripe_payment_methods(customer_id):
+    return stripe.PaymentMethod.list(
+        customer=customer_id,
+        # list by payment method type
+        type='card'
+    )
+
+
+def set_default_stripe_payment_method(customer_id, payment_method_id):
+    return stripe.Customer.modify(
+        customer_id,
+        invoice_settings={'default_payment_method': payment_method_id}
+    )
+
 
 
 
@@ -127,6 +158,10 @@ def detach_stripe_cards(cards: Dict) -> None:
 
 def detach_stripe_card_from_id(card_id: int) -> None:
     stripe.PaymentMethod.detach(card_id)
+
+
+def attach_stripe_card(stripe_id, payment_method):
+    return stripe.PaymentMethod.attach(payment_method, customer=stripe_id)
 
 
 def add_or_replace_stripe_card(stripe_id, setup_intent_id):

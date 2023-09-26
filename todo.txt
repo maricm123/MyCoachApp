@@ -95,3 +95,7 @@ kreiram i subscribe i kao objekat i na Stripe
 ???
 
 - testirati kreiranje programa (da li kreira na Stripe-u kako treba, posle refaktorisanja)
+
+- pogledati sva refaktorisanja
+
+- nastaviti videti kako napraviti client i payment method posto client moze imati vise PM (videti chatgpt)

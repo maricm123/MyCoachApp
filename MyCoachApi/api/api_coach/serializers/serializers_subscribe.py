@@ -11,11 +11,16 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
 
     @transaction.atomic
     def validate(self, data):
+        # ovde izvadim podatke iz 'data'
+        # mozda i vaditi usera iz request.data.user
         print(data, "DATA")
         try:
-            payment_method = PaymentMethod.create_payment_method()
+            # ovde nadjem clienta, izvadim njegov stripe_id 
             client = Client.objects.get(id=data["client_id"])
             print(client)
+
+            # kreiramo objekat payment method i dodajemo klijentu 
+            payment_method = PaymentMethod.create()
             client.payment_method = payment_method
         except:
             return None
