@@ -4,6 +4,7 @@ from trainingProgram.models.training_program import TrainingProgram
 
 
 class Subscribe(models.Model):
+    # ManyToOne
     client = models.ForeignKey(
         Client,
         on_delete=models.SET_NULL,

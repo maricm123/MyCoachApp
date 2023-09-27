@@ -9,7 +9,6 @@ from subscription.models.payment_method import PaymentMethod
 class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Serializer):
     client_id = IntegerField(required=True)
 
-    @transaction.atomic
     def validate(self, data):
         # ovde izvadim podatke iz 'data'
         # mozda i vaditi usera iz request.data.user
@@ -19,9 +18,10 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
             client = Client.objects.get(id=data["client_id"])
             print(client)
 
-            # kreiramo objekat payment method i dodajemo klijentu 
+            # kreiramo objekat payment method (prosledimo podatke)
             payment_method = PaymentMethod.create()
-            client.payment_method = payment_method
+
+            return payment_method
         except:
             return None
         # find client with client_id

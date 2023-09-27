@@ -52,29 +52,6 @@ class ClientRegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response(status=HTTP_200_OK)
 
-# class ClientRegisterView(generics.CreateAPIView):
-#     """
-#     View to handle registration of Clients
-#     and create customer on Stripe
-#     """
-#     serializer_class = ClientSerializer
-#
-#     @transaction.atomic
-#     def perform_create(self, serializer):
-#         # Call the default perform_create() method to handle user registration
-#         client = serializer.save()
-#         try:
-#             # adding stripe_id to client
-#             stripe_id = create_stripe_customer(client.user.email)
-#             client.stripe_customer_id = stripe_id
-#             client.save()
-#
-#             create_stripe_card(stripe_id, token)
-#         except Exception as e:
-#             print(e)
-#         # Return a response indicating successful registration
-#         return Response({'message': 'User registered successfully.'})
-
 
 class CurrentUserView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -157,36 +134,6 @@ def create_stripe_customer(email):
         print(e)
         # Handle the exception if needed
         return None
-
-
-def create_stripe_card(customer_stripe_id, token):
-    print(customer_stripe_id, token)
-    try:
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        # Create a payment method
-        stripe.PaymentMethod.create(
-            type="card",
-            card={
-                "number": "4242424242424242",
-                "exp_month": 12,
-                "exp_year": 2034,
-                "cvc": "314",
-            },
-        )
-        # payment_method = stripe.PaymentMethod.create(
-        #     type='card',
-        #     card={
-        #         'number': number,  # Replace with a valid card number
-        #         'exp_month': exp_month,
-        #         'exp_year': exp_year,
-        #         'cvc': cvc,
-        #     }
-        # )
-        print(card.id)
-        return card.id
-
-    except Exception as e:
-        print(e, "GRESKAA")
 
 
 class SportCategoriesListView(generics.ListAPIView):
