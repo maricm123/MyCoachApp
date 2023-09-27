@@ -8,8 +8,19 @@ class Client(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     stripe_customer_id = models.CharField(max_length=100, blank=True, null=True)
 
+    # default_card_id = models.PositiveIntegerField(null=True, blank=True)
+
     def __str__(self):
         return self.user.name
+    
+    # def set_default_card(self, card_id):
+    #     self.default_card_id = card_id
+    #     self.save()
+
+    # def get_default_card(self):
+    #     if self.default_card_id is not None:
+    #         return PaymentMethod.objects.get(id=self.default_card_id)
+    #     return None
 
     @classmethod
     @transaction.atomic
