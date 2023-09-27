@@ -3,6 +3,15 @@ from django.db import transaction
 from subscription.payment.stripe_handler import create_payment_method
 from profiles.models.client import Client
 
+
+class PaymentMethodManager(models.Manager):
+    def get_payment_methods_for_client(self, client):
+        """
+        Get all PaymentMethods associated with a specific client
+        """
+        return self.filter(client=client)
+
+
 class PaymentMethod(models.Model):
     """
     Model just for Card
@@ -22,6 +31,9 @@ class PaymentMethod(models.Model):
     
     class Meta:
         unique_together = ('client', 'number')  # Ensure uniqueness based on client and card number
+
+    # Custom manager
+    objects = PaymentMethodManager()
 
     @classmethod
     @transaction.atomic
