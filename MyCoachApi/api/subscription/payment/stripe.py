@@ -37,14 +37,11 @@ def create_stripe_subscription(client, program):
     )
 
 
-def create_stripe_payment_method(card_number, exp_month, exp_year, cvc):
+def create_stripe_payment_method(token):
     return stripe.PaymentMethod.create(
         type='card',
         card={
-            'number': card_number,
-            'exp_month': exp_month,
-            'exp_year': exp_year,
-            'cvc': cvc,
+            'token': token,  # Use the token ID here
         },
     )
 

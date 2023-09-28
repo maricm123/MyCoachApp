@@ -1,5 +1,7 @@
-from django.db import models
+from django.db import models, IntegrityError
 from django.db import transaction
+from rest_framework.exceptions import ValidationError
+from stripe.error import StripeError
 from subscription.payment.stripe_handler import create_payment_method
 from profiles.models.client import Client
 
@@ -37,10 +39,10 @@ class PaymentMethod(models.Model):
 
     @classmethod
     @transaction.atomic
-    def create(cls, client, customer_id, number, exp_month, exp_year, cvc):
+    def create(cls, client, customer_id, number, exp_month, exp_year, cvc, token):
         try:
             # Create Stripe PaymentMethod
-            payment_method = create_payment_method(customer_id, number, exp_month, exp_year, cvc)
+            create_payment_method(customer_id, token)
 
             # Create a PaymentMethod object in your Django model
             payment_method_obj = cls(
@@ -55,8 +57,8 @@ class PaymentMethod(models.Model):
 
             return payment_method_obj
 
-        # except stripe.error.StripeError as e:
-        except Exception as e:
-            # Handle Stripe API errors here
-            print(f"Stripe error: {e}")
-            return None
+        except StripeError as e:
+            raise ValidationError("Nesto ne valja u create", e)
+
+        except IntegrityError:
+            raise ValidationError("Ne moze dve iste kartice jedan korisnik")

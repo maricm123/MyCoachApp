@@ -94,8 +94,14 @@ drugi endpoint (vec ga imam) je subscribe, tu kreiram setupIntent (znaci dodajem
 kreiram i subscribe i kao objekat i na Stripe
 ???
 
-- testirati kreiranje programa (da li kreira na Stripe-u kako treba, posle refaktorisanja)
+
+
+- testirati kreiranje programa (da li kreira na Stripe-u kako treba, posle refaktorisanja) - DONE
+- nastaviti videti kako napraviti client i payment method posto client moze imati vise PM (videti chatgpt) - DONE
+
+- skontati za front end za dalje
 
 - pogledati sva refaktorisanja
 
-- nastaviti videti kako napraviti client i payment method posto client moze imati vise PM (videti chatgpt)
+- raditi na listanju svihh paymentMethods
+- raditi na brisanju paymentMethods

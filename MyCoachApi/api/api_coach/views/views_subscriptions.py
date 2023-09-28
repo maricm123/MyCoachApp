@@ -2,7 +2,7 @@ import stripe
 import json
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
@@ -20,9 +20,14 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class AddPaymentMethodToClientView(APIView):
     def post(self, request):
+        print(request.data)
+        # try:
+
         serializer = AddPaymentMethodToClientSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        return Response(status=HTTP_200_OK)
+        return Response(status=HTTP_201_CREATED)
+        # except Exception as e:
+        #     print(e, "VIEW")
 
 
 class CreateSubscription(APIView):

@@ -38,9 +38,9 @@ def create_stripe_customer(email):
 #         return None
 
 
-def create_payment_method(customer_id, card_number, exp_month, exp_year, cvc):
+def create_payment_method(customer_id, token):
     try:
-        payment_method = create_stripe_payment_method(card_number, exp_month, exp_year, cvc)
+        payment_method = create_stripe_payment_method(token)
 
         # Attach the Payment Method to the customer
         attach_stripe_payment_method(payment_method.id, customer_id)
