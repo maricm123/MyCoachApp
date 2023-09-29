@@ -12,7 +12,7 @@ from subscription.payment.stripe_handler import create_subscription
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 
-from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, GetClientPaymentMethodsSerializer
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -20,14 +20,16 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class AddPaymentMethodToClientView(APIView):
     def post(self, request):
-        print(request.data)
-        # try:
-
         serializer = AddPaymentMethodToClientSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(status=HTTP_201_CREATED)
-        # except Exception as e:
-        #     print(e, "VIEW")
+
+class GetClientPaymentMethodsView(APIView):
+    def get(self, request):
+        serializer = GetClientPaymentMethodsSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response()
 
 
 class CreateSubscription(APIView):

@@ -1,4 +1,5 @@
 from django.db import transaction
+from api.subscription.payment.stripe_handler import list_payment_methods
 from rest_framework import serializers
 from api_coach.shared_serializers import PaymentMethodSerializer
 from rest_framework.exceptions import ValidationError
@@ -6,6 +7,7 @@ from rest_framework.fields import IntegerField
 from profiles.models.client import Client
 from stripe.error import StripeError
 from subscription.models.payment_method import PaymentMethod
+from django.shortcuts import get_object_or_404
 
 
 class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Serializer):
@@ -31,3 +33,13 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
             return data
         except StripeError as e:
             raise ValidationError("Stripe error occurred", e)
+
+
+class GetClientPaymentMethodsSerializer(PaymentMethodSerializer, serializers.Serializer):
+
+    def validate(self, data):
+        print(self.request.user)
+        client = get_object_or_404(Client, user=self.request.user)
+        # verovatno mi ne treba stripe ovde, samo cu izvuci kartice iz baze
+        customer_id = client.customer_id
+        card_list = list_payment_methods(customer_id=customer_id)
