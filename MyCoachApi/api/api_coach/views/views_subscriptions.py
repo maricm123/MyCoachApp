@@ -24,6 +24,7 @@ class AddPaymentMethodToClientView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response(status=HTTP_201_CREATED)
 
+
 class GetClientPaymentMethodsView(APIView):
     def get(self, request):
         serializer = GetClientPaymentMethodsSerializer(data=request.data)
