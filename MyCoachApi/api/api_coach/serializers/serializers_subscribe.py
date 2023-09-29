@@ -1,5 +1,5 @@
 from django.db import transaction
-from api.subscription.payment.stripe_handler import list_payment_methods
+from subscription.payment.stripe_handler import list_payment_methods
 from rest_framework import serializers
 from api_coach.shared_serializers import PaymentMethodSerializer
 from rest_framework.exceptions import ValidationError
