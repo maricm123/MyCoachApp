@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models, IntegrityError
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
@@ -27,6 +28,7 @@ class PaymentMethod(models.Model):
     exp_month = models.PositiveIntegerField()
     exp_year = models.PositiveIntegerField()
     cvc = models.CharField(max_length=4)
+    stripe_payment_method_id = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Card ending in {self.number[-4:]}"
@@ -42,7 +44,8 @@ class PaymentMethod(models.Model):
     def create(cls, client, customer_id, number, exp_month, exp_year, cvc, token):
         try:
             # Create Stripe PaymentMethod
-            create_payment_method(customer_id, token)
+            stripe_payment_method = create_payment_method(customer_id, token)
+            stripe_payment_method_id = stripe_payment_method.id
 
             # Create a PaymentMethod object in your Django model
             payment_method_obj = cls(
@@ -52,6 +55,7 @@ class PaymentMethod(models.Model):
                 exp_month=exp_month,
                 exp_year=exp_year,
                 cvc=cvc,
+                stripe_payment_method_id=stripe_payment_method_id,
             )
             payment_method_obj.save()
 
@@ -62,3 +66,5 @@ class PaymentMethod(models.Model):
 
         except IntegrityError:
             raise ValidationError("Ne moze dve iste kartice jedan korisnik")
+        
+

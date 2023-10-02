@@ -105,8 +105,12 @@ kreiram i subscribe i kao objekat i na Stripe
 
 - raditi na listanju svihh paymentMethods
 	back - DONE
-	fron - 
+	front - 
 
 - raditi na brisanju paymentMethods
-	back -
+	back - DONE
+	front -
+
+- raditi na setovanju default payment kartice
+	back - 
 	front -

@@ -67,6 +67,9 @@ def set_default_stripe_payment_method(customer_id, payment_method_id):
         invoice_settings={'default_payment_method': payment_method_id}
     )
 
+def detach_stripe_card_from_id(card_id: int) -> None:
+    stripe.PaymentMethod.detach(card_id)
+
 
 
 

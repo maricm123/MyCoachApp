@@ -1,0 +1,10 @@
+{
+    "client_id": 1,
+    "type": "card",
+    "number": "1234567812345678", 
+    "exp_month": 12,
+    "exp_year": 2025,
+    "cvc": "123",
+    "stripe_payment_method_id": "pm_xxxxxx", 
+    "token": "tok_visa"
+}   

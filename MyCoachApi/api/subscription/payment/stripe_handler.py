@@ -7,6 +7,7 @@ from subscription.payment.stripe import (
     create_stripe_subscription,
     create_stripe_payment_method,
     attach_stripe_payment_method,
+    detach_stripe_card_from_id,
     list_stripe_payment_methods,
     set_default_stripe_payment_method
 )
@@ -24,18 +25,6 @@ def create_stripe_customer(email):
         print(e, "EXCEPTION STIRPE HANDLER")
         # Handle the exception if needed
         return None
-
-
-# We are using here payment method API
-# def attach_stripe_card(stripe_id, payment_method):
-#     try:
-#         card = attach_stripe_card(stripe_id=stripe_id, payment_method=payment_method)
-#         print(card)
-#         return card
-#     except Exception as e:
-#         print(e, "EXCEPTION STIRPE HANDLER")
-#         # Handle the exception if needed
-#         return None
 
 
 def create_payment_method(customer_id, token):
@@ -90,3 +79,10 @@ def set_default_payment_method(customer_id, payment_method_id):
         # Handle Stripe API errors here
         print(f"Stripe error: {e}")
         return False
+    
+def detach_payment_card_from_id(card_id):
+    try:
+        detach_stripe_card_from_id(card_id)
+        return True
+    except StripeError as e:
+        return Response({'error': str(e)}, status=400)

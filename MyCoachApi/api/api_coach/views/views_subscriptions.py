@@ -3,20 +3,21 @@ import stripe
 import json
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
 from subscription.models.payment_method import PaymentMethod
 from subscription.models.subscribe import Subscribe
 from subscription.models.coach_transaction import CoachTransaction
-from subscription.payment.stripe_handler import create_subscription
+from subscription.payment.stripe_handler import create_subscription, detach_payment_card_from_id
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 from rest_framework import generics
 from api_coach.shared_serializers import PaymentMethodSerializer
+from django.db import transaction
 
-from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, GetClientPaymentMethodsSerializer
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -28,13 +29,6 @@ class AddPaymentMethodToClientView(APIView):
         serializer.is_valid(raise_exception=True)
         return Response(status=HTTP_201_CREATED)
 
-
-# class GetClientPaymentMethodsView(APIView):
-#     def get(self, request):
-#         serializer = GetClientPaymentMethodsSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-
-#         return Response()
 
 class PaymentMethodList(generics.ListAPIView):
     serializer_class = PaymentMethodSerializer
@@ -48,6 +42,23 @@ class PaymentMethodList(generics.ListAPIView):
         user = self.request.user
         client = Client.objects.get(user=user)
         return PaymentMethod.objects.filter(client=client)
+    
+
+class DeletePaymentMethod(generics.DestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+    
+    @transaction.atomic
+    def delete(self, request, pk):
+        user = self.request.user
+        client = Client.objects.get(user=user)
+        payment_method = PaymentMethod.objects.filter(id=pk, client=client)
+        stripe_payment_method_id = payment_method.first().stripe_payment_method_id
+        try:
+            detach_payment_card_from_id(stripe_payment_method_id)
+            payment_method.delete()
+            return Response(status=HTTP_204_NO_CONTENT)
+        except Exception as e:
+            print(e)
 
 
 class CreateSubscription(APIView):
