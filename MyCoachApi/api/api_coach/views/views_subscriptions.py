@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 import stripe
 import json
 from rest_framework.permissions import IsAuthenticated
@@ -6,11 +7,14 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
+from subscription.models.payment_method import PaymentMethod
 from subscription.models.subscribe import Subscribe
 from subscription.models.coach_transaction import CoachTransaction
 from subscription.payment.stripe_handler import create_subscription
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
+from rest_framework import generics
+from api_coach.shared_serializers import PaymentMethodSerializer
 
 from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, GetClientPaymentMethodsSerializer
 
@@ -25,12 +29,25 @@ class AddPaymentMethodToClientView(APIView):
         return Response(status=HTTP_201_CREATED)
 
 
-class GetClientPaymentMethodsView(APIView):
-    def get(self, request):
-        serializer = GetClientPaymentMethodsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+# class GetClientPaymentMethodsView(APIView):
+#     def get(self, request):
+#         serializer = GetClientPaymentMethodsSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
 
-        return Response()
+#         return Response()
+
+class PaymentMethodList(generics.ListAPIView):
+    serializer_class = PaymentMethodSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        client = Client.objects.get(user=user)
+        return PaymentMethod.objects.filter(client=client)
 
 
 class CreateSubscription(APIView):

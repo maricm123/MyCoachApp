@@ -35,11 +35,14 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
             raise ValidationError("Stripe error occurred", e)
 
 
-class GetClientPaymentMethodsSerializer(PaymentMethodSerializer, serializers.Serializer):
+class GetClientPaymentMethodsSerializer(serializers.Serializer):
 
     def validate(self, data):
-        print(self.request.user)
-        client = get_object_or_404(Client, user=self.request.user)
+        print(data)
+        
+        # client = get_object_or_404(Client, user=self.request.user)
         # verovatno mi ne treba stripe ovde, samo cu izvuci kartice iz baze
             # customer_id = client.customer_id
             # card_list = #list_payment_methods(customer_id=customer_id)
+
+        return data

@@ -95,7 +95,6 @@ export default {
       // Do something with the current user data
       this.currentUser = currentUser;
       this.email = currentUser.email;
-      // this.privacy = currentUser.account_status;
     });
     // this.getFollowers();
   },

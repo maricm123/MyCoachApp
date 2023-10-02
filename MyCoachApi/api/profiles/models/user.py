@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class CustomUserManager(UserManager):
-    def _create_user(self, name, email, password, **extra_fields):
+    def _create_user(self, name, email, password=None, **extra_fields):
         if not email:
             raise ValueError("You have not provided a valid e-mail address")
 

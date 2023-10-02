@@ -104,4 +104,9 @@ kreiram i subscribe i kao objekat i na Stripe
 - pogledati sva refaktorisanja
 
 - raditi na listanju svihh paymentMethods
+	back - DONE
+	fron - 
+
 - raditi na brisanju paymentMethods
+	back -
+	front -
