@@ -11,5 +11,5 @@
 
 
 {
-    "payment_method_id": 22
+    "payment_method_id": 7
 }

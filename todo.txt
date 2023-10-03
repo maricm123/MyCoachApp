@@ -112,5 +112,5 @@ kreiram i subscribe i kao objekat i na Stripe
 	front -
 
 - raditi na setovanju default payment kartice
-	back - 
+	back - DONE
 	front -

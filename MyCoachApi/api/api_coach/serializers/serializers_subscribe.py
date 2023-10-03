@@ -1,4 +1,5 @@
 from django.db import transaction
+from api_coach.mixins import ReqContextMixin
 from subscription.payment.stripe_handler import list_payment_methods
 from rest_framework import serializers
 from api_coach.shared_serializers import PaymentMethodSerializer
@@ -35,7 +36,7 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
             raise ValidationError("Stripe error occurred", e)
 
 
-class DefaultCardSerializer(serializers.Serializer):
+class DefaultCardSerializer(ReqContextMixin, serializers.Serializer):
     """
     WARN: This serializer has no fields data, it is just used as a proxy to get Stripe infos.
     """
@@ -49,9 +50,7 @@ class DefaultCardSerializer(serializers.Serializer):
         return payment_method
 
     def validate(self, data):
-        print(data)
-        
-        # convive = get_object_or_404(Client, user=self.user)
-        # card = data["card"]
-        # convive.set_default_card(card)
+        client = get_object_or_404(Client, user=self._req_context.user)
+        payment_method = data["payment_method_id"]
+        client.set_default_card(payment_method)
         return data

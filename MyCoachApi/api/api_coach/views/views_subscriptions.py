@@ -14,7 +14,7 @@ from subscription.payment.stripe_handler import create_subscription, detach_paym
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 from rest_framework import generics
-from api_coach.shared_serializers import PaymentMethodSerializer
+from api_coach.shared_serializers import ListPaymentMethodSerializer, PaymentMethodSerializer
 from django.db import transaction
 
 from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, DefaultCardSerializer
@@ -31,7 +31,7 @@ class AddPaymentMethodToClientView(APIView):
 
 
 class PaymentMethodList(generics.ListAPIView):
-    serializer_class = PaymentMethodSerializer
+    serializer_class = ListPaymentMethodSerializer
     permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
@@ -45,10 +45,10 @@ class PaymentMethodList(generics.ListAPIView):
 
 
 class SetPaymentMethodDefault(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        serializer = DefaultCardSerializer(data=request.data)
+        serializer = DefaultCardSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         return Response(status=HTTP_200_OK)
 

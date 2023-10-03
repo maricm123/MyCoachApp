@@ -22,7 +22,7 @@ class PaymentMethod(models.Model):
     """
     # When client is deleted, all associated PaymentMethods objects are deleted.
     # ManyToOne
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='payment_methods')
     type = models.CharField(max_length=50, null=False, blank=False, default="card")
     number = models.CharField(max_length=16)  # Assuming 16-digit card number
     exp_month = models.PositiveIntegerField()
@@ -66,5 +66,9 @@ class PaymentMethod(models.Model):
 
         except IntegrityError:
             raise ValidationError("Ne moze dve iste kartice jedan korisnik")
-        
 
+
+    # Here we need to see if that card is default for client
+    @property
+    def is_default(self) -> bool:
+        return self == self.client.default_card
