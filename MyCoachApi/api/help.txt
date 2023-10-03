@@ -8,3 +8,8 @@
     "stripe_payment_method_id": "pm_xxxxxx", 
     "token": "tok_visa"
 }   
+
+
+{
+    "payment_method_id": 22
+}

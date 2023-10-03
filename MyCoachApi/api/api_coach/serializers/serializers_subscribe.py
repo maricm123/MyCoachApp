@@ -33,3 +33,25 @@ class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Se
             return data
         except StripeError as e:
             raise ValidationError("Stripe error occurred", e)
+
+
+class DefaultCardSerializer(serializers.Serializer):
+    """
+    WARN: This serializer has no fields data, it is just used as a proxy to get Stripe infos.
+    """
+    payment_method_id = serializers.CharField(required=True)
+
+    def validate_payment_method_id(self, value):
+        try:
+            payment_method = PaymentMethod.objects.get(id=value)
+        except PaymentMethod.DoesNotExist:
+            raise serializers.ValidationError("Payment method does not exist")
+        return payment_method
+
+    def validate(self, data):
+        print(data)
+        
+        # convive = get_object_or_404(Client, user=self.user)
+        # card = data["card"]
+        # convive.set_default_card(card)
+        return data

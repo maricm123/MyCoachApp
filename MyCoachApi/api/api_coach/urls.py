@@ -33,6 +33,7 @@ urlpatterns = [
     path('add-payment-method-to-client/', views_subscriptions.AddPaymentMethodToClientView.as_view(), name='add-payment-method-to-client'),
     path('get-payment-methods/', views_subscriptions.PaymentMethodList.as_view(), name='get-payment-methods'),
     path('delete-payment-method/<int:pk>/', views_subscriptions.DeletePaymentMethod.as_view(), name='delete-payment-method'),
+    path('set-payment-method-default/', views_subscriptions.SetPaymentMethodDefault.as_view(), name='set-payment-method-default'),
     # SUBSCRIPTIONS
     path('create-subscription/', views_subscriptions.CreateSubscription.as_view(), name='create-subscription'),
     path('webhook-test/' , views_subscriptions.WebHook.as_view()),

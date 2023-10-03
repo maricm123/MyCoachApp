@@ -17,7 +17,7 @@ from rest_framework import generics
 from api_coach.shared_serializers import PaymentMethodSerializer
 from django.db import transaction
 
-from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, DefaultCardSerializer
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -41,8 +41,17 @@ class PaymentMethodList(generics.ListAPIView):
         """
         user = self.request.user
         client = Client.objects.get(user=user)
-        return PaymentMethod.objects.filter(client=client)
-    
+        return PaymentMethod.objects.get_payment_methods_for_client(client=client)
+
+
+class SetPaymentMethodDefault(APIView):
+    # permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        serializer = DefaultCardSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(status=HTTP_200_OK)
+
 
 class DeletePaymentMethod(generics.DestroyAPIView):
     permission_classes = (IsAuthenticated, )
