@@ -53,6 +53,7 @@ def attach_stripe_payment_method(payment_method_id, customer_id):
     )
 
 
+
 def list_stripe_payment_methods(customer_id):
     return stripe.PaymentMethod.list(
         customer=customer_id,

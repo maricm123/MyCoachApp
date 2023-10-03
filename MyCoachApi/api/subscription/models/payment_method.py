@@ -43,11 +43,7 @@ class PaymentMethod(models.Model):
     @transaction.atomic
     def create(cls, client, customer_id, number, exp_month, exp_year, cvc, token):
         try:
-            # Create Stripe PaymentMethod
-            stripe_payment_method = create_payment_method(customer_id, token)
-            stripe_payment_method_id = stripe_payment_method.id
-
-            # Create a PaymentMethod object in your Django model
+            # Create a PaymentMethod object in your Django model (without saving it yet)
             payment_method_obj = cls(
                 client=client,
                 type="card",
@@ -55,18 +51,34 @@ class PaymentMethod(models.Model):
                 exp_month=exp_month,
                 exp_year=exp_year,
                 cvc=cvc,
-                stripe_payment_method_id=stripe_payment_method_id,
             )
+
+            # Attempt to save the PaymentMethod object in the database
+            payment_method_obj.save()
+
+            # Create Stripe PaymentMethod only if the database operation succeeds
+            stripe_payment_method = create_payment_method(customer_id, token)
+            stripe_payment_method_id = stripe_payment_method.id
+
+            # Update the PaymentMethod object with the Stripe PaymentMethod ID
+            payment_method_obj.stripe_payment_method_id = stripe_payment_method_id
             payment_method_obj.save()
 
             return payment_method_obj
 
         except StripeError as e:
-            raise ValidationError("Nesto ne valja u create", e)
+            # Handle Stripe API errors here (e.g., log the error)
+            # payment_method_obj.delete()  # Rollback the creation in case of Stripe error
+            raise ValidationError("Error with Stripe API: " + str(e))
 
         except IntegrityError:
-            raise ValidationError("Ne moze dve iste kartice jedan korisnik")
+            # payment_method_obj.delete()  # Rollback the creation in case of IntegrityError
+            raise ValidationError("Duplicate card not allowed")
 
+        except Exception as e:
+            # Handle other exceptions (e.g., unexpected errors)
+            # payment_method_o  bj.delete()  # Rollback the creation in case of other exceptions
+            raise ValidationError("An unexpected error occurred: " + str(e))
 
     # Here we need to see if that card is default for client
     @property

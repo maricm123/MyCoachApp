@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
-from subscription.payment.stripe_handler import create_stripe_customer
+from subscription.payment.stripe_handler import create_stripe_customer, set_default_payment_method
 
 
 class Client(models.Model):
@@ -20,7 +20,9 @@ class Client(models.Model):
     def __str__(self):
         return self.user.name
     
+    @transaction.atomic
     def set_default_card(self, card):
+        set_default_payment_method(self.stripe_customer_id, card.stripe_payment_method_id)
         self.default_card = card
         self.save()
 

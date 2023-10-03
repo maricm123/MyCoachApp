@@ -33,7 +33,6 @@ def create_payment_method(customer_id, token):
 
         # Attach the Payment Method to the customer
         attach_stripe_payment_method(payment_method.id, customer_id)
-
         return payment_method
 
     except stripe.error.StripeError as e:
@@ -79,7 +78,8 @@ def set_default_payment_method(customer_id, payment_method_id):
         # Handle Stripe API errors here
         print(f"Stripe error: {e}")
         return False
-    
+
+
 def detach_payment_card_from_id(card_id):
     try:
         detach_stripe_card_from_id(card_id)
