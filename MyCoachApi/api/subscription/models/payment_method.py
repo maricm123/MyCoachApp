@@ -62,6 +62,10 @@ class PaymentMethod(models.Model):
 
             # Update the PaymentMethod object with the Stripe PaymentMethod ID
             payment_method_obj.stripe_payment_method_id = stripe_payment_method_id
+
+            # Set new card to default
+            client.set_default_card(payment_method_obj)
+            
             payment_method_obj.save()
 
             return payment_method_obj

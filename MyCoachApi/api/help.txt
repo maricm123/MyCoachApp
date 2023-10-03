@@ -8,6 +8,17 @@
     "token": "tok_visa"
 }   
 
+{
+    "client_id": 1,
+    "type": "card",
+    "number": "1234567812344444", 
+    "exp_month": 12,
+    "exp_year": 2025,
+    "cvc": "123",
+    "token": "tok_mastercard"
+}
+
+
 
 {
     "payment_method_id": 7

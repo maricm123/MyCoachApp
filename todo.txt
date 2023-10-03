@@ -99,10 +99,6 @@ kreiram i subscribe i kao objekat i na Stripe
 - testirati kreiranje programa (da li kreira na Stripe-u kako treba, posle refaktorisanja) - DONE
 - nastaviti videti kako napraviti client i payment method posto client moze imati vise PM (videti chatgpt) - DONE
 
-- skontati za front end za dalje
-
-- pogledati sva refaktorisanja
-
 - raditi na listanju svihh paymentMethods
 	back - DONE
 	front - 
@@ -114,3 +110,6 @@ kreiram i subscribe i kao objekat i na Stripe
 - raditi na setovanju default payment kartice
 	back - DONE
 	front -
+
+- kad kreiram novu karticu (odma setovati kao default card)
+	back - 
