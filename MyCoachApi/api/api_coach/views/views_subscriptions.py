@@ -17,7 +17,7 @@ from rest_framework import generics
 from api_coach.shared_serializers import ListPaymentMethodSerializer, PaymentMethodSerializer
 from django.db import transaction
 
-from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, DefaultCardSerializer
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, ClientSubscribeListSerializer, DefaultCardSerializer
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -42,6 +42,20 @@ class PaymentMethodList(generics.ListAPIView):
         user = self.request.user
         client = Client.objects.get(user=user)
         return PaymentMethod.objects.get_payment_methods_for_client(client=client)
+    
+
+class SubscribeList(generics.ListAPIView):
+    serializer_class = ClientSubscribeListSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        client = Client.objects.get(user=user)
+        return Subscribe.objects.filter(client=client)
 
 
 class SetPaymentMethodDefault(APIView):
@@ -75,11 +89,13 @@ class CreateSubscription(APIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
+        print(self.request.data)
         client = Client.objects.get(user=user)
         price_id = request.data['price_id_stripe']
         # Fetch the program details
         program = TrainingProgram.objects.get(price_id_stripe=price_id)
-        
+        print(program.price_id_stripe)
+        print(client.stripe_customer_id)
         # Create a subscription in Stripe
         subscription = create_subscription(client, program)
 

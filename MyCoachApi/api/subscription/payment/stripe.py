@@ -33,8 +33,8 @@ def create_stripe_subscription(client, program):
     return stripe.Subscription.create(
             customer=client.stripe_customer_id,
             items=[{'price': program.price_id_stripe}],  # Assuming you have a Stripe Price ID for the program
-            cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
-            success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
+            # cancel_url=FRONTEND_SUBSCRIPTION_CANCEL_URL,  # Get the cancellation URL from settings
+            # success_url=FRONTEND_SUBSCRIPTION_SUCCESS_URL,  # Get the success URL from settings
     )
 
 

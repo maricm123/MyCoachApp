@@ -115,3 +115,8 @@ kreiram i subscribe i kao objekat i na Stripe
 	back - DONE
 
 - popraviti Create Program i sve ostalo testirati
+	- create Program testirati na Frontu pravljenje
+
+- nastaviti sa izlistavanjem SubscribeList od clienta
+- ubaciti polje kad je kreirana subscribe
+- videti da li moze da se nekako hendla mesec dana od kad je napravljen subscribe

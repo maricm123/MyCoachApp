@@ -39,8 +39,8 @@
             <br />
             <br />
             <text>
-              <strong>Name:</strong>
-              {{ training.name }}
+              <!-- <strong>Name:</strong>
+              {{ training.name }} -->
             </text>
             <br />
             <br />
@@ -140,17 +140,14 @@ export default {
         user: {}
       },
       currentUser: null
-      // liked: false,
-      // liked_by: [],
-      // original_tweet_user: null
     };
   },
   async created() {
-    await this.getTraining();
     await this.$store.dispatch("getCurrentUser").then(currentUser => {
       // Do something with the current user data
       this.currentUser = currentUser;
     });
+    await this.getTraining();
     // ako mi ne treba nista od ove fije osim da se storuje u state onda koristim samo ovo:
     //   mounted() {
     //   this.$store.dispatch("getCurrentUser");
@@ -239,7 +236,7 @@ export default {
         .get(`/api_coach/program/${trainingID}/`)
         .then(response => {
           this.training = response.data;
-          console.log(this.training.name);
+          console.log(this.training);
           this.training.user = response.data.user;
           // this.liked_by = response.data.liked_by;
           // if (this.tweet.is_retweet) {

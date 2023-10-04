@@ -3,6 +3,7 @@ import CoachSignUp from "../views/coach/CoachSignUp.vue";
 import ClientSignUp from "../views/client/ClientSignUp.vue";
 import Dashboard from "../views/dashboard/Dashboard.vue";
 import TrainingDetail from "../views/dashboard/TrainingDetail.vue";
+import TrainingDetail2 from "../views/dashboard/TrainingDetail2.vue";
 import AddTrainingProgram from "../views/dashboard/AddTrainingProgram.vue";
 import CreatePaymentMethod from "../views/client/CreatePaymentMethod";
 import Subscription from "../views/subscription/Subscription.vue";
@@ -59,10 +60,15 @@ const routes = [
       requireLogin: true
     }
   },
+  // {
+  //   path: '/dashboard/training/:id',
+  //   name: 'TrainingDetail',
+  //   component: TrainingDetail,
+  // },
   {
     path: '/dashboard/training/:id',
     name: 'TrainingDetail',
-    component: TrainingDetail,
+    component: TrainingDetail2,
   },
   {
     path: '/dashboard/subscribe',
@@ -88,7 +94,7 @@ const routes = [
     }
   },
   {
-    path: "/create-payment-method",
+    path: "/dashboard/create-payment-method",
     name: "CreatePaymentMethod",
     component: CreatePaymentMethod,
     meta: {

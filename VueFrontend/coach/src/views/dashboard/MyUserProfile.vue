@@ -11,7 +11,7 @@
         </div>
         <div v-if="currentUser.role == 'client'">
           <button class="button is-light">
-            <router-link to="/dashboard/add-training-program">Add your credit card</router-link>
+            <router-link to="/dashboard/create-payment-method">Add your credit card</router-link>
           </button>
         </div>
         <button @click="logout()" class="button is-danger">Log out</button>
@@ -74,6 +74,42 @@
         </div>
       </div>
     </div>-->
+    <article class="panel is-link">
+      <p class="panel-heading">
+        Link
+      </p>
+      <p class="panel-tabs">
+        <a class="is-active">Subscribed</a>
+        <a>Active payments</a>
+        <a>Canceled payments</a>
+        <a>Registered cards</a>
+      </p>
+
+      <a class="panel-block is-active">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        bulma
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        marksheet
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        minireset.css
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fas fa-book" aria-hidden="true"></i>
+        </span>
+        jgthms.github.io
+      </a>
+    </article>
   </div>
 </template>
 <script>
@@ -83,11 +119,8 @@ export default {
   data() {
     return {
       programs: [],
-      currentUser: null,
+      currentUser: {},
       email: null
-      // followers: [],
-      // followingList: [],
-      // followRequest: []
     };
   },
   created() {
@@ -96,7 +129,7 @@ export default {
       this.currentUser = currentUser;
       this.email = currentUser.email;
     });
-    // this.getFollowers();
+    this.getSubscribes();
   },
   methods: {
     async logout() {
@@ -132,36 +165,37 @@ export default {
         .then(response => {
           this.programs = response.data;
         });
-    }
+    },
     // async editUser() {
     //   // Navigate to the tweet update page
     //   this.$router.push(
     //     `/dashboard/my-user-profile/edit/${this.currentUser.id}/`
     //   );
     // }
-    // async getFollowers() {
-    //   await axios
-    //     .get("/api/following-list/", {
-    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
-    //     })
-    //     .then(response => {
-    //       this.followingList = response.data;
-    //     });
-    //   await axios
-    //     .get("/api/followers-list/", {
-    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
-    //     })
-    //     .then(response => {
-    //       this.followers = response.data;
-    //     });
-    //   await axios
-    //     .get("/api/follow-request-list/", {
-    //       headers: { Authorization: `Bearer ${this.$store.state.access}` }
-    //     })
-    //     .then(response => {
-    //       this.followRequest = response.data;
-    //     });
-    // },
+    async getSubscribes() {
+      await axios
+        .get("/api_coach/subscribe-list/", {
+          headers: { Authorization: `Bearer ${this.$store.state.access}` }
+        })
+        .then(response => {
+          this.subscribeList = response.data;
+          console.log(this.subscribeList)
+        });
+      // await axios
+      //   .get("/api/followers-list/", {
+      //     headers: { Authorization: `Bearer ${this.$store.state.access}` }
+      //   })
+      //   .then(response => {
+      //     this.followers = response.data;
+      //   });
+      // await axios
+      //   .get("/api/follow-request-list/", {
+      //     headers: { Authorization: `Bearer ${this.$store.state.access}` }
+      //   })
+      //   .then(response => {
+      //     this.followRequest = response.data;
+      //   });
+    },
     // async acceptFollow(follow_request_id) {
     //   console.log(follow_request_id);
     //   console.log("accept");

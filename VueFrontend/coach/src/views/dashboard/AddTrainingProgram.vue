@@ -88,11 +88,20 @@ export default {
       sport_categories: {
         id: "",
         name: ""
-      }
+      },
+      currentUser: {},
     };
   },
   mounted() {
     this.getSportCategories();
+  },
+  created() {
+    this.$store.dispatch("getCurrentUser").then(currentUser => {
+      // Do something with the current user data
+      this.currentUser = currentUser;
+      this.email = currentUser.email;
+      console.log(this.currentUser.id)
+    });
   },
   methods: {
     async submitForm() {
@@ -103,8 +112,10 @@ export default {
         text: this.text,
         pdf: this.pdf,
         coach_share_percentage: this.coach_share_percentage,
+        coach: this.currentUser.id,
         sport_category: 1
       };
+      console.log(program)
       await axios
         .post("/api_coach/create-program/", program, {
           headers: { Authorization: `Bearer ${this.$store.state.access}` }
@@ -132,9 +143,7 @@ export default {
           headers: { Authorization: `Bearer ${this.$store.state.access}` }
         })
         .then(response => {
-          console.log(response.data);
           this.sport_categories = response.data;
-          console.log(this.sport_categories);
         })
         .catch(error => {
           console.log(error);

@@ -42,6 +42,7 @@ class TrainingProgramCreate(APIView):
     # permission_classes = (IsAuthenticated, )
 
     def post(self, request):
+        print(request.data)
         serializer = TrainingProgramSerializerForCreate(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=HTTP_201_CREATED)

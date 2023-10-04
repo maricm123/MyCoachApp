@@ -62,7 +62,9 @@ def create_subscription(client, program):
         subscription = create_stripe_subscription(client, program)
         return subscription
     except StripeError as e:
-        raise ValidationError({'error': str(e)}, status=400)
+        # Handle Stripe API errors here
+        print(f"Stripe error: {e}")
+        return None
         
 
 def list_payment_methods(customer_id):

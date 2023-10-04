@@ -32,3 +32,16 @@
 {
     "payment_method_id": 7
 }
+
+
+
+
+{
+    "name": "cf",
+    "price": 11,
+    "text": "asd",
+    "coach_share_percentage": 10,
+    "pdf_file": null,
+    "sport_category": 1,
+    "coach_id": 4
+}

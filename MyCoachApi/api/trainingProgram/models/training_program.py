@@ -53,6 +53,7 @@ class TrainingProgram(models.Model):
     @classmethod
     @transaction.atomic
     def create(cls, name, price, pdf_file, text, sport_category, coach, coach_share_percentage):
+        print(coach)
         try:
             # Create a PaymentMethod object in your Django model (without saving it yet)
             training_program_obj = cls(
