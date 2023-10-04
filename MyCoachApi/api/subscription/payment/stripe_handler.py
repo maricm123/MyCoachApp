@@ -14,6 +14,9 @@ from subscription.payment.stripe import (
 from django.conf import settings
 from stripe.error import StripeError
 from rest_framework.response import Response
+from subscription.utils import usd_to_cents
+from rest_framework.exceptions import ValidationError
+
 
 def create_stripe_customer(email):
     try:
@@ -43,15 +46,15 @@ def create_payment_method(customer_id, token):
 
 def create_stripe_product_and_price(name, price):
     try:
-        product = create_stripe_product(name)
-        print(product)  
+        stripe_product = create_stripe_product(name)
+        
+        cent_price = usd_to_cents(price)
+        stripe_price = create_stripe_price(cent_price, stripe_product)
 
-        price = create_stripe_price(price, product)
-        print(price)
-        return product.id
+        return stripe_product, stripe_price
+
     except StripeError as e:
-        print("ASDASDASDSAD", e)
-        return Response({'error': str(e)}, status=400)
+        raise ValidationError({'error': str(e)}, status=400)
     
 
 def create_subscription(client, program):
@@ -59,7 +62,7 @@ def create_subscription(client, program):
         subscription = create_stripe_subscription(client, program)
         return subscription
     except StripeError as e:
-        return Response({'error': str(e)}, status=400)
+        raise ValidationError({'error': str(e)}, status=400)
         
 
 def list_payment_methods(customer_id):

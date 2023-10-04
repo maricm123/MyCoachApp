@@ -15,12 +15,13 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 def create_stripe_product(name):
     return stripe.Product.create(name=name)
 
-
+# Just price with month interval
 def create_stripe_price(price, product):
     return stripe.Price.create(
         unit_amount=price,
         currency="usd",
-        product=product.id
+        product=product.id,
+        recurring={"interval": "month"},
     )
 
 

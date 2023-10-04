@@ -5,6 +5,8 @@ from profiles.models.client import Client
 from profiles.models.sport_category import SportCategory
 from django.db import transaction
 from subscription.payment.stripe_handler import create_stripe_product_and_price
+from rest_framework.exceptions import ValidationError
+from stripe.error import StripeError
 
 
 class TrainingProgram(models.Model):
@@ -29,6 +31,7 @@ class TrainingProgram(models.Model):
     )
 
     price_id_stripe = models.CharField(max_length=100, blank=True, null=True)
+    product_id_stripe = models.CharField(max_length=100, blank=True, null=True)
 
     coach_share_percentage = models.PositiveIntegerField(default=70)
 
@@ -61,13 +64,18 @@ class TrainingProgram(models.Model):
                 coach_share_percentage=coach_share_percentage,
                 coach=coach
             )
-            print("CREATE")
             # Attempt to save the PaymentMethod object in the database
             training_program_obj.save()
 
             stripe_training_program = create_stripe_product_and_price(name, price)
-            # price_id_stripe = stripe_training_program.
+            
+            training_program_obj.product_id_stripe = stripe_training_program[0]["id"]
+            training_program_obj.price_id_stripe = stripe_training_program[1]["id"]
 
+            training_program_obj.save()
+
+        except StripeError as e:
+            raise ValidationError("Error with Stripe API: " + str(e))
 
         except Exception as e:
-            print(e)
+            raise ValidationError("An unexpected error occurred: " + str(e))

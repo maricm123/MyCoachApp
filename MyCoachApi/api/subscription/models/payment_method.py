@@ -71,17 +71,12 @@ class PaymentMethod(models.Model):
             return payment_method_obj
 
         except StripeError as e:
-            # Handle Stripe API errors here (e.g., log the error)
-            # payment_method_obj.delete()  # Rollback the creation in case of Stripe error
             raise ValidationError("Error with Stripe API: " + str(e))
 
         except IntegrityError:
-            # payment_method_obj.delete()  # Rollback the creation in case of IntegrityError
             raise ValidationError("Duplicate card not allowed")
 
         except Exception as e:
-            # Handle other exceptions (e.g., unexpected errors)
-            # payment_method_o  bj.delete()  # Rollback the creation in case of other exceptions
             raise ValidationError("An unexpected error occurred: " + str(e))
 
     # Here we need to see if that card is default for client

@@ -22,6 +22,5 @@ class TrainingProgramSerializerForCreate(serializers.ModelSerializer):
         fields = ['name', 'price', 'pdf_file', 'text', 'coach_share_percentage', 'sport_category', 'coach', ]
 
     def validate(self, data):
-        print(data)
         TrainingProgram.create(**data)
         return data
