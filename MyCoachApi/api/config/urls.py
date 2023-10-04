@@ -11,6 +11,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api_coach/", include("api_coach.urls", namespace="api_coach")),
     path('api-auth/', include('rest_framework.urls')),
+    path("__debug__/", include("debug_toolbar.urls")),
+
 ]
 # urlpatterns += [path("", include(rest_urls, namespace="rest_framework"))]
 if settings.DEBUG:

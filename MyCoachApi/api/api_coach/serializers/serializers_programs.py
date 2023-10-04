@@ -19,5 +19,9 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
 class TrainingProgramSerializerForCreate(serializers.ModelSerializer):
     class Meta:
         model = TrainingProgram
-        fields = ['id', 'name', 'price', 'pdf_file', 'text', 'coach_share_percentage', 'sport_category',]
-        read_only_fields = ['price_id_stripe',]
+        fields = ['name', 'price', 'pdf_file', 'text', 'coach_share_percentage', 'sport_category', 'coach', ]
+
+    def validate(self, data):
+        print(data)
+        TrainingProgram.create(**data)
+        return data

@@ -112,4 +112,6 @@ kreiram i subscribe i kao objekat i na Stripe
 	front -
 
 - kad kreiram novu karticu (odma setovati kao default card)
-	back - 
+	back - DONE
+
+- popraviti Create Program i sve ostalo testirati

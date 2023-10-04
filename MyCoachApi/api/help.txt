@@ -18,6 +18,15 @@
     "token": "tok_mastercard"
 }
 
+{
+    "name": "cf",
+    "price": 11,
+    "text": "asd",
+    "coach_share_percentage": 10,
+    "pdf_file": null,
+    "sport_category": 1,
+    "coach": 1
+}
 
 
 {

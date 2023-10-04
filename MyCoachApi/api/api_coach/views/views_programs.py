@@ -11,6 +11,8 @@ from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.coach import Coach
 from profiles.models.user import User
 from subscription.payment.stripe_handler import create_stripe_product_and_price
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -20,22 +22,29 @@ class TrainingProgramView(generics.ListCreateAPIView):
     serializer_class = TrainingProgramSerializer
 
 
-class TrainingProgramCreate(generics.CreateAPIView):
-    serializer_class = TrainingProgramSerializerForCreate
-    permission_classes = [IsAuthenticated]
+# class TrainingProgramCreate(generics.CreateAPIView):
+#     serializer_class = TrainingProgramSerializerForCreate
+#     permission_classes = (IsAuthenticated, )
 
-    def perform_create(self, serializer):
-        with transaction.atomic():
-            try:
-                name = self.request.data['name']
-                price = self.request.data['price']
-                stripe_product = create_stripe_product_and_price(self, name, price)
-                coach = Coach.objects.get(user=self.request.user)
-                serializer.save(coach=coach, price_id_stripe=stripe_product)
-            except Exception as e:
-                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#     def perform_create(self, serializer):
+#         with transaction.atomic():
+#             try:
+#                 print(self.request.data, "DATAAA")
+#                 name = self.request.data['name']
+#                 price = self.request.data['price']
+#                 stripe_product = create_stripe_product_and_price(self, name, price)
+#                 coach = Coach.objects.get(user=self.request.user)
+#                 serializer.save(coach=coach, price_id_stripe=stripe_product)
+#             except Exception as e:
+#                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class TrainingProgramCreate(APIView):
+    # permission_classes = (IsAuthenticated, )
 
+    def post(self, request):
+        serializer = TrainingProgramSerializerForCreate(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=HTTP_201_CREATED)
 
 
 

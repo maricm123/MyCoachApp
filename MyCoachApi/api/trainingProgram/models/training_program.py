@@ -3,6 +3,8 @@ from django.db.models import DecimalField
 from profiles.models.coach import Coach
 from profiles.models.client import Client
 from profiles.models.sport_category import SportCategory
+from django.db import transaction
+from subscription.payment.stripe_handler import create_stripe_product_and_price
 
 
 class TrainingProgram(models.Model):
@@ -44,3 +46,28 @@ class TrainingProgram(models.Model):
 
     def __str__(self):
         return self.name
+    
+    @classmethod
+    @transaction.atomic
+    def create(cls, name, price, pdf_file, text, sport_category, coach, coach_share_percentage):
+        try:
+            # Create a PaymentMethod object in your Django model (without saving it yet)
+            training_program_obj = cls(
+                name=name,
+                price=price,
+                pdf_file=pdf_file,
+                text=text,
+                sport_category=sport_category,
+                coach_share_percentage=coach_share_percentage,
+                coach=coach
+            )
+            print("CREATE")
+            # Attempt to save the PaymentMethod object in the database
+            training_program_obj.save()
+
+            stripe_training_program = create_stripe_product_and_price(name, price)
+            # price_id_stripe = stripe_training_program.
+
+
+        except Exception as e:
+            print(e)

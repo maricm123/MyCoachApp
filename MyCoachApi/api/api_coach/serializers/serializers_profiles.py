@@ -51,11 +51,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CoachSerializer(serializers.ModelSerializer):
     user = UserSerializer()  # Nested UserSerializer
-    sport_category = SportCategorySerializer()
+    sport_category = SportCategorySerializer(required=False)
 
     class Meta:
         model = Coach
         fields = ['user', 'biography', 'sport_category', ]
+        read_only_fields = ["sport_category", ]
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

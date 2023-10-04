@@ -44,9 +44,13 @@ def create_payment_method(customer_id, token):
 def create_stripe_product_and_price(name, price):
     try:
         product = create_stripe_product(name)
+        print(product)  
+
         price = create_stripe_price(price, product)
+        print(price)
         return product.id
     except StripeError as e:
+        print("ASDASDASDSAD", e)
         return Response({'error': str(e)}, status=400)
     
 
