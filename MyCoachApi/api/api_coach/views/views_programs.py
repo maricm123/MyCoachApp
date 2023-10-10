@@ -22,31 +22,13 @@ class TrainingProgramView(generics.ListCreateAPIView):
     serializer_class = TrainingProgramSerializer
 
 
-# class TrainingProgramCreate(generics.CreateAPIView):
-#     serializer_class = TrainingProgramSerializerForCreate
-#     permission_classes = (IsAuthenticated, )
-
-#     def perform_create(self, serializer):
-#         with transaction.atomic():
-#             try:
-#                 print(self.request.data, "DATAAA")
-#                 name = self.request.data['name']
-#                 price = self.request.data['price']
-#                 stripe_product = create_stripe_product_and_price(self, name, price)
-#                 coach = Coach.objects.get(user=self.request.user)
-#                 serializer.save(coach=coach, price_id_stripe=stripe_product)
-#             except Exception as e:
-#                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 class TrainingProgramCreate(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        print(request.data)
         serializer = TrainingProgramSerializerForCreate(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=HTTP_201_CREATED)
-
 
 
 class TrainingProgramsListByUser(generics.ListAPIView):

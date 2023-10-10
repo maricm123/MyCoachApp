@@ -24,16 +24,13 @@ class TrainingProgramSerializerForCreate(serializers.ModelSerializer):
         model = TrainingProgram
         fields = ['name', 'price', 'pdf_file', 'text', 'coach_share_percentage', 'sport_category', 'coach', ]
     
-    def validate_coach_id(self, value):
+    def validate_coach(self, value):
         try:
             coach = Coach.objects.get(user_id=value)
-            print(coach)
         except Coach.DoesNotExist:
             raise serializers.ValidationError("Coach does not exist")
         return coach
             
     def validate(self, data):
-        print(data)
-        
         TrainingProgram.create(**data)
         return data

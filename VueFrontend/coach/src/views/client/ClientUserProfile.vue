@@ -4,16 +4,9 @@
       <div class="column is-12">
         <h1 class="title">User Profile - {{email}}</h1>
         <button class="button" @click="editUser">Edit profile</button>
-        <div v-if="currentUser.role == 'coach'">
-          <button class="button is-light">
-            <router-link to="/dashboard/add-training-program">Add your training program</router-link>
-          </button>
-        </div>
-        <div v-if="currentUser.role == 'client'">
           <button class="button is-light">
             <router-link to="/dashboard/create-payment-method">Add your credit card</router-link>
           </button>
-        </div>
         <button @click="logout()" class="button is-danger">Log out</button>
       </div>
       <br />
@@ -115,7 +108,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "MyUserProfile",
+  name: "ClientUserProfile",
   data() {
     return {
       programs: [],

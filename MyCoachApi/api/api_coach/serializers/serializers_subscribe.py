@@ -1,4 +1,5 @@
 from django.db import transaction
+from .serializers_programs import TrainingProgramSerializer
 from subscription.models.subscribe import Subscribe
 from api_coach.mixins import ReqContextMixin
 from subscription.payment.stripe_handler import list_payment_methods
@@ -58,6 +59,8 @@ class DefaultCardSerializer(ReqContextMixin, serializers.Serializer):
     
 
 class ClientSubscribeListSerializer(serializers.ModelSerializer):
+    training_program = TrainingProgramSerializer()
+
     class Meta:
         model = Subscribe
         fields = ("training_program",)

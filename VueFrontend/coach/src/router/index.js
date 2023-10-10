@@ -9,7 +9,9 @@ import CreatePaymentMethod from "../views/client/CreatePaymentMethod";
 import Subscription from "../views/subscription/Subscription.vue";
 import Cancel from "../views/subscription/Cancel.vue";
 import Success from "../views/subscription/Success.vue";
-import MyUserProfile from "../views/dashboard/MyUserProfile.vue";
+import ClientUserProfile from "../views/client/ClientUserProfile.vue";
+import CoachUserProfile from "../views/coach/CoachUserProfile.vue";
+
 import ClientPaymentMethods from '../views/client/ClientPaymentMethods.vue'
 import UserProfile from "../views/dashboard/UserProfile.vue";
 import ForgotPassword from "../views/ForgotPassword.vue";
@@ -53,9 +55,17 @@ const routes = [
   //   component: ResetPassword,
   // },
   {
-    path: "/dashboard/my-user-profile",
-    name: "my-user-profile",
-    component: MyUserProfile,
+    path: "/dashboard/client-user-profile",
+    name: "client-user-profile",
+    component: ClientUserProfile,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: "/dashboard/coach-user-profile",
+    name: "coach-user-profile",
+    component: CoachUserProfile,
     meta: {
       requireLogin: true
     }
@@ -102,7 +112,7 @@ const routes = [
     }
   },
   {
-    path: "/dashboard/my-user-profile/get-payment-methods",
+    path: "/dashboard/client-user-profile/get-payment-methods",
     name: "ClientPaymentMethods",
     component: ClientPaymentMethods,
     meta: {

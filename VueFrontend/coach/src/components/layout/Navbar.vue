@@ -26,8 +26,11 @@
               <router-link to="/login" class="button is-light">Log in</router-link>
             </template>
 
-            <template v-else>
-              <router-link to="/dashboard/my-user-profile" class="button is-info">My account</router-link>
+            <template v-else-if="$store.state.role == 'coach'">
+              <router-link to="/dashboard/coach-user-profile" class="button is-info">My account</router-link>
+            </template>
+            <template v-else-if="$store.state.role == 'client'">
+              <router-link to="/dashboard/client-user-profile" class="button is-info">My account</router-link>
             </template>
           </div>
         </div>

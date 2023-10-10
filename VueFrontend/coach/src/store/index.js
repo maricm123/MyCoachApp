@@ -16,6 +16,7 @@ export default createStore({
     initializeStore(state) {
       if (localStorage.getItem("access")) {
         state.access = localStorage.getItem('access')
+        state.role = localStorage.getItem('role')
         state.isAuthenticated = true
       } else {
         state.access = ''

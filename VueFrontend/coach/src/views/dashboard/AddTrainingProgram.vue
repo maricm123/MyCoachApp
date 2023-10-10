@@ -22,9 +22,9 @@
           </div>
 
           <div class="field">
-            <label for="pdf">PDF File</label>
+            <label for="pdf_file">PDF File</label>
             <div class="control">
-              <input type="file" id="pdf" accept=".pdf" @change="handleFileUpload" />
+              <input type="file" id="pdf_file" accept=".pdf" @change="handleFileUpload" />
             </div>
           </div>
 
@@ -83,7 +83,7 @@ export default {
       name: "",
       price: "",
       text: "",
-      pdf: "",
+      pdf_file: "",
       coach_share_percentage: "",
       sport_categories: {
         id: "",
@@ -110,7 +110,7 @@ export default {
         name: this.name,
         price: this.price,
         text: this.text,
-        pdf: this.pdf,
+        pdf_file: this.pdf_file,
         coach_share_percentage: this.coach_share_percentage,
         coach: this.currentUser.id,
         sport_category: 1
@@ -118,7 +118,9 @@ export default {
       console.log(program)
       await axios
         .post("/api_coach/create-program/", program, {
-          headers: { Authorization: `Bearer ${this.$store.state.access}` }
+          headers: {
+             Authorization: `Bearer ${this.$store.state.access}`,
+             "Content-Type": "multipart/form-data", }
         })
         .then(response => {
           toast({
