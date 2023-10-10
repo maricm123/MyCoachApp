@@ -1,4 +1,4 @@
-
+from datetime import datetime
 """
 Accessing Request Data:
 You can use this mixin when you need to access data from the incoming HTTP request, such as the user making the request, request headers, query parameters, or other request-related information.
@@ -11,3 +11,9 @@ class ReqContextMixin:
     @property
     def _req_context(self):
         return self.context["request"]
+
+
+def convert_stripe_period_to_date(current_period_end):
+    next_payment_date = datetime.utcfromtimestamp(current_period_end)
+    formatted_next_payment_date = next_payment_date.strftime("%Y-%m-%d %H:%M:%S")
+    return formatted_next_payment_date

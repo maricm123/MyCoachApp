@@ -3,16 +3,8 @@ from profiles.models.coach import Coach
 from trainingProgram.models.training_program import TrainingProgram
 from api_coach.serializers.serializers_profiles import CoachSerializer
 from api_coach.serializers.serializers_profiles import SportCategorySerializer
+from ..shared_serializers import DateFromDateTimeField
 
-class DateFromDateTimeField(serializers.ReadOnlyField):
-    def __init__(self, date_format=None, *args, **kwargs):
-        self.date_format = date_format
-        super().__init__(*args, **kwargs)
-
-    def to_representation(self, value):
-        if value:
-            return value.strftime(self.date_format)
-        return None
 
 class TrainingProgramSerializer(serializers.ModelSerializer):
     coach = CoachSerializer()

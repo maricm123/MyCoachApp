@@ -73,7 +73,8 @@ def detach_stripe_card_from_id(card_id: int) -> None:
     stripe.PaymentMethod.detach(card_id)
 
 
-
+def retrieve_stripe_subscribe_from_id(subscription_id):
+    return stripe.Subscription.retrieve(subscription_id)
 
 
 

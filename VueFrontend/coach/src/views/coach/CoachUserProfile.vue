@@ -3,7 +3,16 @@
         <div class="columns is-multiline">
           <div class="column is-12">
             <h1 class="title">User Profile - {{email}}</h1>
+            <button class="button" @click="editUser">Edit profile</button>
+            <button class="button is-light">
+              <router-link to="/dashboard/client-user-profile/create-payment-method">Add your credit card</router-link>
+            </button>
+            <button class="button is-light">
+              <router-link to="/dashboard/client-user-profile/get-payment-methods">Payment cards</router-link>
+            </button>
+            <button @click="logout()" class="button is-danger">Log out</button>
           </div>
+      
           <!-- ovde u if dodati jos ako currentUser prati usera kojem smo na profilu onda moze da vidi ovo -->
           <div>
             <div class="card" v-for="program in programs" v-bind:key="program.id">
@@ -58,6 +67,31 @@ export default {
     
   },
   methods: {
+    async logout() {
+      const refresh = localStorage.getItem("refresh");
+      await axios
+        .post(
+          "/api_coach/logout/",
+          { refresh },
+          {
+            headers: { Authorization: `Bearer ${this.$store.state.access}` }
+          }
+        )
+        .then(response => {
+          console.log("Logged out");
+        })
+        .catch(error => {
+          console.log("ERROR");
+          console.log(JSON.stringify(error));
+        });
+      this.$store.commit("removeAccess");
+      axios.defaults.headers.common["Authorization"] = "";
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("role");
+
+      this.$router.push("/login");
+    },
     async getUserTrainings() {
       await axios
         .get("/api_coach/programs-by-me/", {

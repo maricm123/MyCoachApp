@@ -7,10 +7,11 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CON
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
+from api_coach.mixins import convert_stripe_period_to_date
 from subscription.models.payment_method import PaymentMethod
 from subscription.models.subscribe import Subscribe
 from subscription.models.coach_transaction import CoachTransaction
-from subscription.payment.stripe_handler import create_subscription, detach_payment_card_from_id
+from subscription.payment.stripe_handler import create_subscription, detach_payment_card_from_id, retrieve_subscribe_from_id
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 from rest_framework import generics
@@ -53,10 +54,15 @@ class SubscribeList(generics.ListAPIView):
         This view should return a list of all the purchases
         for the currently authenticated user.
         """
+        stripe_subscription_ids = []
         user = self.request.user
         client = Client.objects.get(user=user)
-        return Subscribe.objects.filter(client=client)
-
+        subscribes = Subscribe.objects.subscribes_by_client(client=client)
+        for subscribe in subscribes:
+            stripe_subscription_id = subscribe.stripe_subscription_id
+            stripe_subscription_ids.append(stripe_subscription_id)
+        retrive_stripe_subscribe = retrieve_subscribe_from_id(stripe_subscription_ids)
+        return subscribes
 
 class SetPaymentMethodDefault(APIView):
     permission_classes = (IsAuthenticated, )
@@ -99,6 +105,10 @@ class CreateSubscription(APIView):
         # Create a subscription in Stripe
         subscription = create_subscription(client, program)
 
+        print(subscription.current_period_end)
+
+        current_period_date = convert_stripe_period_to_date(subscription.current_period_end)
+
         # Save subscription details in your model
         subscription_instance = Subscribe.objects.create(
             client=client,
@@ -106,6 +116,7 @@ class CreateSubscription(APIView):
             coach_share_percentage=program.coach_share_percentage,
             stripe_subscription_id=subscription.id,
             status=subscription.status,
+            current_period_end=current_period_date
         )
         # Create a transaction record for the coach's share
         CoachTransaction.objects.create(

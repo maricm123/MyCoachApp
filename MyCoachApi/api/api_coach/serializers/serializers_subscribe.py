@@ -11,7 +11,7 @@ from profiles.models.client import Client
 from stripe.error import StripeError
 from subscription.models.payment_method import PaymentMethod
 from django.shortcuts import get_object_or_404
-
+from ..shared_serializers import DateFromDateTimeField
 
 class AddPaymentMethodToClientSerializer(PaymentMethodSerializer, serializers.Serializer):
     client_id = serializers.IntegerField(required=True)
@@ -60,7 +60,9 @@ class DefaultCardSerializer(ReqContextMixin, serializers.Serializer):
 
 class ClientSubscribeListSerializer(serializers.ModelSerializer):
     training_program = TrainingProgramSerializer()
-
+    created_at = DateFromDateTimeField(date_format='%d-%m-%Y')
+    current_period_end = DateFromDateTimeField(date_format='%d-%m-%Y')
+    
     class Meta:
         model = Subscribe
-        fields = ("training_program",)
+        fields = ("training_program", "created_at", "current_period_end",)

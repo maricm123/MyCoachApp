@@ -4,7 +4,7 @@ from trainingProgram.models.training_program import TrainingProgram
 
 
 class SubscribeManager(models.Manager):
-    def subscribes_by_client(self):
+    def subscribes_by_client(self, client):
         return self.filter(client__isnull=False)
 
 
@@ -23,7 +23,9 @@ class Subscribe(models.Model):
         null=True,
     )
 
-    # created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    current_period_end = models.DateTimeField(blank=False, null=False)
 
     coach_share_percentage = models.IntegerField()
 

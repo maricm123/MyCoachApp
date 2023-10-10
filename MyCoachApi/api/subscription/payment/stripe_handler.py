@@ -1,3 +1,4 @@
+from datetime import datetime
 import stripe
 from subscription.payment.stripe import (
     create_stripe_customer_id,
@@ -9,6 +10,7 @@ from subscription.payment.stripe import (
     attach_stripe_payment_method,
     detach_stripe_card_from_id,
     list_stripe_payment_methods,
+    retrieve_stripe_subscribe_from_id,
     set_default_stripe_payment_method
 )
 from django.conf import settings
@@ -95,3 +97,26 @@ def detach_payment_card_from_id(card_id):
         return True
     except StripeError as e:
         return Response({'error': str(e)}, status=400)
+    
+
+# return list of subscribes from list of IDs
+def retrieve_subscribe_from_id(subscribe_ids):
+    retrieved_subscriptions = []
+
+    for subscription_id in subscribe_ids:
+        try:
+            subscription = retrieve_stripe_subscribe_from_id(subscription_id=subscription_id)
+            print(subscription.current_period_end)
+            current_period_end_timestamp = subscription.current_period_end
+            next_payment_date = datetime.utcfromtimestamp(current_period_end_timestamp)
+
+            # You can format the next_payment_date as needed
+            formatted_next_payment_date = next_payment_date.strftime("%Y-%m-%d %H:%M:%S")
+            print(formatted_next_payment_date)
+            retrieved_subscriptions.append(subscription)
+        except StripeError as e:
+            # Handle Stripe API errors here
+            print(f"Stripe error: {e}")
+            return False
+    
+    return retrieved_subscriptions
