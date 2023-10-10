@@ -101,24 +101,25 @@ kreiram i subscribe i kao objekat i na Stripe
 
 - raditi na listanju svihh paymentMethods
 	back - DONE
-	front - 
+	front - DONE
 
 - raditi na brisanju paymentMethods
 	back - DONE
-	front -
+	front - DONE
 
 - raditi na setovanju default payment kartice
 	back - DONE
-	front -
+	front - DONE
 
 - kad kreiram novu karticu (odma setovati kao default card)
 	back - DONE
 
 - popraviti Create Program i sve ostalo testirati
 	- create Program testirati na Frontu pravljenje
-	(ne snima pdf) - ovde napraviti bolje, otvorio sam tab na chrome
+	(ne snima pdf) - ovde napraviti bolje, otvorio sam tab na chrome https://www.bezkoder.com/vue-axios-file-upload/
 	    
-- razdvojiti stranice na frontu za client i coach profile
+- razdvojiti stranice na frontu za client i coach profile - DONE
+- namestiti prikaz datuma - DONE
 
 - nastaviti sa izlistavanjem SubscribeList od clienta
 

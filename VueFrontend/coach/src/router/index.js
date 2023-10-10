@@ -104,7 +104,7 @@ const routes = [
     }
   },
   {
-    path: "/dashboard/create-payment-method",
+    path: "/dashboard/client-user-profile/create-payment-method",
     name: "CreatePaymentMethod",
     component: CreatePaymentMethod,
     meta: {

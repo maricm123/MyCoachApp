@@ -4,10 +4,20 @@ from trainingProgram.models.training_program import TrainingProgram
 from api_coach.serializers.serializers_profiles import CoachSerializer
 from api_coach.serializers.serializers_profiles import SportCategorySerializer
 
+class DateFromDateTimeField(serializers.ReadOnlyField):
+    def __init__(self, date_format=None, *args, **kwargs):
+        self.date_format = date_format
+        super().__init__(*args, **kwargs)
+
+    def to_representation(self, value):
+        if value:
+            return value.strftime(self.date_format)
+        return None
 
 class TrainingProgramSerializer(serializers.ModelSerializer):
     coach = CoachSerializer()
     sport_category = SportCategorySerializer()
+    created_at = DateFromDateTimeField(date_format='%d-%m-%Y')  # Define your desired format here
 
     class Meta:
         model = TrainingProgram

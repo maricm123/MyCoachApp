@@ -4,9 +4,12 @@
       <div class="column is-12">
         <h1 class="title">User Profile - {{email}}</h1>
         <button class="button" @click="editUser">Edit profile</button>
-          <button class="button is-light">
-            <router-link to="/dashboard/create-payment-method">Add your credit card</router-link>
-          </button>
+        <button class="button is-light">
+          <router-link to="/dashboard/client-user-profile/create-payment-method">Add your credit card</router-link>
+        </button>
+        <button class="button is-light">
+          <router-link to="/dashboard/client-user-profile/get-payment-methods">Payment cards</router-link>
+        </button>
         <button @click="logout()" class="button is-danger">Log out</button>
       </div>
       <br />
@@ -173,7 +176,11 @@ export default {
         .then(response => {
           this.subscribeList = response.data;
           console.log(this.subscribeList)
+        })
+        .catch(error => {
+          console.log(error);
         });
+        
       // await axios
       //   .get("/api/followers-list/", {
       //     headers: { Authorization: `Bearer ${this.$store.state.access}` }
