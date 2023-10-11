@@ -114,15 +114,26 @@ kreiram i subscribe i kao objekat i na Stripe
 - kad kreiram novu karticu (odma setovati kao default card)
 	back - DONE
 
-- popraviti Create Program i sve ostalo testirati
-	- create Program testirati na Frontu pravljenje
-	(ne snima pdf) - ovde napraviti bolje, otvorio sam tab na chrome https://www.bezkoder.com/vue-axios-file-upload/
 	    
 - razdvojiti stranice na frontu za client i coach profile - DONE
 - namestiti prikaz datuma - DONE
 
-- nastaviti sa izlistavanjem SubscribeList od clienta
+- nastaviti sa izlistavanjem SubscribeList od clienta - DONE
 
-- ubaciti polje kad je kreirana subscribe
+- ubaciti polje kad je kreirana subscribe - DONE
 
-- videti da li moze da se nekako hendla mesec dana od kad je napravljen subscribe
+- videti da li moze da se nekako hendla mesec dana od kad je napravljen subscribe (ubacen pocetak novog placanje) - DONE
+
+
+- popraviti Create Program i sve ostalo testirati
+	- create Program testirati na Frontu pravljenje
+	(ne snima pdf) - ovde napraviti bolje, otvorio sam tab na chrome https://www.bezkoder.com/vue-axios-file-upload/
+
+
+- izlistati payments od clienta
+
+- odraditi dodavanje kartice (za pocetak slati hardkodovan token?)
+
+- napraviti plan za subscribe sta dalje treba da se doda (cancel subscribe, resubscribe)
+
+- skontati kako cron job da proverava subscribe current period end i da ga resetuje i updajtuje u bazi

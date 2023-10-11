@@ -70,44 +70,63 @@
         </div>
       </div>
     </div>-->
-    <article class="panel is-link">
-      <p class="panel-heading">
-        Link
-      </p>
-      <p class="panel-tabs">
-        <a class="is-active">Subscribed</a>
-        <a>Active payments</a>
-        <a>Canceled payments</a>
-        <a>Registered cards</a>
-      </p>
+    <h1 class="title"> Subscribes </h1>
+    
+    <div v-for="subscribe in subscribeList" v-bind:key="subscribe.id" class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          {{subscribe.training_program.name}}
+        </p>
+        <p class="price">
+          {{subscribe.training_program.price}}$ / month
+        </p>
+        <button class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          <p>Status - {{subscribe.status}} </p>
+          <p>Registered - {{subscribe.created_at}}</p>
+          <time >Next payment - {{subscribe.current_period_end }}</time>
+        </div>
+      </div>
+      <footer class="card-footer">
+       
+        <a href="#" class="card-footer-item">Check program</a>
+        <a href="#" class="card-footer-item">Re-subscribe</a>
+        <a href="#" class="card-footer-item">Cancel subscribe</a>
+      </footer>
+    </div>
+    <br/>
+    <h1 class="title"> Payments </h1>
 
-      <a class="panel-block is-active">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        bulma
-      </a>
-      <a class="panel-block">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        marksheet
-      </a>
-      <a class="panel-block">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        minireset.css
-      </a>
-      <a class="panel-block">
-        <span class="panel-icon">
-          <i class="fas fa-book" aria-hidden="true"></i>
-        </span>
-        jgthms.github.io
-      </a>
-    </article>
+    <div v-for="subscribe in subscribeList" v-bind:key="subscribe.id" class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          {{subscribe.training_program.name}}
+        </p>
+        <p class="price">
+          {{subscribe.training_program.price}}$ / month
+        </p>
+        <button class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </button>
+      </header>
+      <div class="card-content">
+        <div class="content">
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo soluta nam nobis odit dolo </p>
+          <p>Registered - {{subscribe.created_at}}</p>
+          <time >Next payment - {{subscribe.current_period_end }}</time>
+        </div>
+      </div>
+    </div>
   </div>
-</template>
+</template> 
 <script>
 import axios from "axios";
 export default {
@@ -116,7 +135,8 @@ export default {
     return {
       programs: [],
       currentUser: {},
-      email: null
+      email: null,
+      subscribeList: []
     };
   },
   created() {
@@ -175,7 +195,6 @@ export default {
         })
         .then(response => {
           this.subscribeList = response.data;
-          console.log(this.subscribeList)
         })
         .catch(error => {
           console.log(error);
@@ -236,5 +255,11 @@ export default {
 <style scoped>
 .card {
   margin-top: 40px;
+}
+
+.price {
+  font-weight: 700;
+  text-align: right;
+  padding: 0.75rem 1rem;
 }
 </style>

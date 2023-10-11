@@ -106,13 +106,11 @@ def retrieve_subscribe_from_id(subscribe_ids):
     for subscription_id in subscribe_ids:
         try:
             subscription = retrieve_stripe_subscribe_from_id(subscription_id=subscription_id)
-            print(subscription.current_period_end)
             current_period_end_timestamp = subscription.current_period_end
             next_payment_date = datetime.utcfromtimestamp(current_period_end_timestamp)
 
             # You can format the next_payment_date as needed
             formatted_next_payment_date = next_payment_date.strftime("%Y-%m-%d %H:%M:%S")
-            print(formatted_next_payment_date)
             retrieved_subscriptions.append(subscription)
         except StripeError as e:
             # Handle Stripe API errors here

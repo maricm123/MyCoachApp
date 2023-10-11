@@ -65,4 +65,4 @@ class ClientSubscribeListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Subscribe
-        fields = ("training_program", "created_at", "current_period_end",)
+        fields = ("training_program", "created_at", "current_period_end", "status", )
