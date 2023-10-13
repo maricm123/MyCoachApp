@@ -7,18 +7,19 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CON
 from rest_framework.views import APIView
 from django.conf import settings
 from django.http import JsonResponse
+from profiles.models.user import User
 from api_coach.mixins import convert_stripe_period_to_date
 from subscription.models.payment_method import PaymentMethod
 from subscription.models.subscribe import Subscribe
 from subscription.models.coach_transaction import CoachTransaction
-from subscription.payment.stripe_handler import create_subscription, detach_payment_card_from_id, retrieve_subscribe_from_id
+from subscription.payment.stripe_handler import create_subscription, detach_payment_card_from_id, retrieve_payments_from_customer_id, retrieve_subscribe_from_id
 from trainingProgram.models.training_program import TrainingProgram
 from profiles.models.client import Client
 from rest_framework import generics
 from api_coach.shared_serializers import ListPaymentMethodSerializer, PaymentMethodSerializer
 from django.db import transaction
 
-from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, ClientSubscribeListSerializer, DefaultCardSerializer
+from api_coach.serializers.serializers_subscribe import AddPaymentMethodToClientSerializer, ClientSubscribeListSerializer, DefaultCardSerializer, PaymentIntentSerializer
 
 webhook_secret = settings.STRIPE_WEBHOOK_SECRET
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -51,7 +52,7 @@ class SubscribeList(generics.ListAPIView):
 
     def get_queryset(self):
         """
-        This view should return a list of all the purchases
+        This view should return a list of all the subscribes
         for the currently authenticated user.
         """
         stripe_subscription_ids = []
@@ -63,6 +64,34 @@ class SubscribeList(generics.ListAPIView):
             stripe_subscription_ids.append(stripe_subscription_id)
         retrive_stripe_subscribe = retrieve_subscribe_from_id(stripe_subscription_ids)
         return subscribes
+    
+from datetime import datetime
+class PaymentList(APIView):
+    pass
+    # permission_classes = (IsAuthenticated, )
+
+    # def get(self, request):
+    #     """
+    #     This view should return a list of all the payments
+    #     for the currently authenticated user.
+    #     """
+    #     user = self.request.user
+    #     client = Client.objects.get(user=user)
+    #     stripe_payments = retrieve_payments_from_customer_id(client.stripe_customer_id)
+
+    #     payment_data = []
+    #     for payment in stripe_payments:
+    #         created = datetime.utcfromtimestamp(payment.created)
+    #         data = {
+    #             'payment': payment,
+    #             'created': created,
+    #         }
+    #         serializer = PaymentIntentSerializer(data=data)
+    #         serializer.is_valid()
+    #         print(serializer.data)
+    #         payment_data.append(serializer.data)
+    #     return Response(payment_data, status=HTTP_200_OK)
+
 
 class SetPaymentMethodDefault(APIView):
     permission_classes = (IsAuthenticated, )
@@ -95,17 +124,12 @@ class CreateSubscription(APIView):
 
     def post(self, request, *args, **kwargs):
         user = self.request.user
-        print(self.request.data)
         client = Client.objects.get(user=user)
         price_id = request.data['price_id_stripe']
         # Fetch the program details
         program = TrainingProgram.objects.get(price_id_stripe=price_id)
-        print(program.price_id_stripe)
-        print(client.stripe_customer_id)
         # Create a subscription in Stripe
         subscription = create_subscription(client, program)
-
-        print(subscription.current_period_end)
 
         current_period_date = convert_stripe_period_to_date(subscription.current_period_end)
 
@@ -127,50 +151,53 @@ class CreateSubscription(APIView):
         return Response({'message': 'Subscription created successfully'})
 
 
-class WebHook(APIView):
-    def post(self, request):
-        """
-            This API handling the webhook .
+from django.views.decorators.csrf import csrf_exempt
+class StripeWebHookView(APIView):
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        payload = request.body
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
-            :return: returns event details as json response .
-        """
-        request_data = json.loads(request.body)
-        if webhook_secret:
-            # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-            signature = request.META['HTTP_STRIPE_SIGNATURE']
-            try:
-                event = stripe.Webhook.construct_event(
-                    payload=request.body,
-                    sig_header=signature,
-                    secret=webhook_secret
-                )
-                data = event['data']
-            except ValueError as err:
-                raise err
-            except stripe.error.SignatureVerificationError as err:
-                raise err
-            # Get the type of webhook event sent - used to check the status of PaymentIntents.
-            event_type = event['type']
-        else:
-            data = request_data['data']
-            event_type = request_data['type']
-        data_object = data['object']
+        # Replace 'YOUR_STRIPE_WEBHOOK_SECRET' with your actual webhook secret key
+        endpoint_secret = 'whsec_cb52007df8cfbceddf02a35291b57bb0f76be42d93bf02e9a910bb4676a8bca2'
 
-        if event_type == 'checkout.session.completed':
-            # Payment is successful and the subscription is created.
-            # You should provision the subscription and save the customer ID to your database.
-            print("-----checkout.session.completed----->", data['object']['customer'])
-        elif event_type == 'invoice.paid':
-            # Continue to provision the subscription as payments continue to be made.
-            # Store the status in your database and check when a user accesses your service.
-            # This approach helps you avoid hitting rate limits.
-            print("-----invoice.paid----->", data)
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, endpoint_secret
+            )
+        except ValueError as e:
+            return Response({'error': 'Invalid payload'}, status=400)
+        except stripe.error.SignatureVerificationError as e:
+            return Response({'error': 'Invalid signature'}, status=400)
+
+        # Handle the specific event types you want to process
+        event_type = event['type']
+
+        if event_type == 'customer.subscription.updated':
+            print("SUB UPDATED")
+            # Handle subscription update event
+            # Access event data using event['data']['object']
+            # Implement your logic here
+            pass
+
+        if event_type == 'customer.subscription.deleted':
+            print("DELETED SUB")
+            # Handle subscription update event
+            # Access event data using event['data']['object']
+            # Implement your logic here
+            pass
+
+        elif event_type == 'invoice.payment_succeeded':
+            # Handle successful payment event
+            # Access event data using event['data']['object']
+            # Implement your logic here
+            pass
+
         elif event_type == 'invoice.payment_failed':
-            # The payment failed or the customer does not have a valid payment method.
-            # The subscription becomes past_due. Notify your customer and send them to the
-            # customer portal to update their payment information.
-            print("-----invoice.payment_failed----->", data)
-        else:
-            print('Unhandled event type {}'.format(event_type))
+            # Handle failed payment event
+            # Access event data using event['data']['object']
+            # Implement your logic here
+            pass
 
-        return JsonResponse(success=True, safe=False)
+        # Return a successful response
+        return Response({'message': 'Webhook event processed'}, status=200)

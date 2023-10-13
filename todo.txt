@@ -129,7 +129,6 @@ kreiram i subscribe i kao objekat i na Stripe
 	- create Program testirati na Frontu pravljenje
 	(ne snima pdf) - ovde napraviti bolje, otvorio sam tab na chrome https://www.bezkoder.com/vue-axios-file-upload/
 
-
 - izlistati payments od clienta
 
 - odraditi dodavanje kartice (za pocetak slati hardkodovan token?)
@@ -137,3 +136,5 @@ kreiram i subscribe i kao objekat i na Stripe
 - napraviti plan za subscribe sta dalje treba da se doda (cancel subscribe, resubscribe)
 
 - skontati kako cron job da proverava subscribe current period end i da ga resetuje i updajtuje u bazi
+		-WEBHOOK deo (krenuo raditi)
+		-za sad nek ima samo update kad se desi promena current period enda (svaki mesec)

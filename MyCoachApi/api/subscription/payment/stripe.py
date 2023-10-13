@@ -77,7 +77,15 @@ def retrieve_stripe_subscribe_from_id(subscription_id):
     return stripe.Subscription.retrieve(subscription_id)
 
 
+def retrieve_stripe_payment_from_customer_id(customer_id):
 
+    payment_intents = stripe.PaymentIntent.list(customer=customer_id)
+    return payment_intents.data
+
+    # for payment_intent in payment_intents.data:
+    #     return payment_intent
+        # Process the payment_intent as needed
+        # print(payment_intent.id, payment_intent.amount, payment_intent.currency)
 
 
 

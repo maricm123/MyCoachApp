@@ -66,3 +66,19 @@ class ClientSubscribeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscribe
         fields = ("training_program", "created_at", "current_period_end", "status", )
+
+
+class PaymentIntentSerializer(serializers.Serializer):
+    payment_method = serializers.CharField()
+    amount = serializers.IntegerField()
+    amount_usd = serializers.SerializerMethodField()
+    created = DateFromDateTimeField(date_format='%d-%m-%Y')
+
+    def get_amount_usd(self, obj):
+        # Convert the amount to USD by dividing by 100
+        return obj['amount'] / 100
+    
+    def get_created(self, obj):
+        asd = obj['created']
+        print(asd, "ASDASD")
+        return asd

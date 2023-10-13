@@ -10,6 +10,7 @@ from subscription.payment.stripe import (
     attach_stripe_payment_method,
     detach_stripe_card_from_id,
     list_stripe_payment_methods,
+    retrieve_stripe_payment_from_customer_id,
     retrieve_stripe_subscribe_from_id,
     set_default_stripe_payment_method
 )
@@ -118,3 +119,16 @@ def retrieve_subscribe_from_id(subscribe_ids):
             return False
     
     return retrieved_subscriptions
+
+
+def retrieve_payments_from_customer_id(customer_id):
+    retrieved_payments = []
+
+    try:
+        payments = retrieve_stripe_payment_from_customer_id(customer_id)
+        return payments
+    except StripeError as e:
+            # Handle Stripe API errors here
+            print(f"Stripe error: {e}")
+            return False
+        

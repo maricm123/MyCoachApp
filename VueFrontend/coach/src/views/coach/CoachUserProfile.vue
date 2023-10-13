@@ -5,10 +5,7 @@
             <h1 class="title">User Profile - {{email}}</h1>
             <button class="button" @click="editUser">Edit profile</button>
             <button class="button is-light">
-              <router-link to="/dashboard/client-user-profile/create-payment-method">Add your credit card</router-link>
-            </button>
-            <button class="button is-light">
-              <router-link to="/dashboard/client-user-profile/get-payment-methods">Payment cards</router-link>
+              <router-link to="/dashboard/coach-user-profile/add-training-program">Add training program</router-link>
             </button>
             <button @click="logout()" class="button is-danger">Log out</button>
           </div>

@@ -96,7 +96,7 @@ const routes = [
     component: Success,
   },
   {
-    path: '/dashboard/add-training-program/',
+    path: '/dashboard/coach-user-profile/add-training-program/',
     name: 'AddTrainingProgram',
     component: AddTrainingProgram,
     meta: {

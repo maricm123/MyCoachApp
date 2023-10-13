@@ -136,7 +136,8 @@ export default {
       programs: [],
       currentUser: {},
       email: null,
-      subscribeList: []
+      subscribeList: [],
+      payments: [],
     };
   },
   created() {
@@ -145,7 +146,7 @@ export default {
       this.currentUser = currentUser;
       this.email = currentUser.email;
     });
-    this.getSubscribes();
+    this.getSubscribesAndPayments();
   },
   methods: {
     async logout() {
@@ -173,22 +174,13 @@ export default {
 
       this.$router.push("/login");
     },
-    async getUserTrainings() {
-      await axios
-        .get("/api_coach/programs-by-me/", {
-          headers: { Authorization: `Bearer ${this.$store.state.access}` }
-        })
-        .then(response => {
-          this.programs = response.data;
-        });
-    },
     // async editUser() {
     //   // Navigate to the tweet update page
     //   this.$router.push(
     //     `/dashboard/my-user-profile/edit/${this.currentUser.id}/`
     //   );
     // }
-    async getSubscribes() {
+    async getSubscribesAndPayments() {
       await axios
         .get("/api_coach/subscribe-list/", {
           headers: { Authorization: `Bearer ${this.$store.state.access}` }
@@ -201,11 +193,12 @@ export default {
         });
         
       // await axios
-      //   .get("/api/followers-list/", {
+      //   .get("/api_coach/payment-list/", {
       //     headers: { Authorization: `Bearer ${this.$store.state.access}` }
       //   })
       //   .then(response => {
-      //     this.followers = response.data;
+      //     console.log(response.data)
+      //     this.payments = response.data;
       //   });
       // await axios
       //   .get("/api/follow-request-list/", {
@@ -248,7 +241,6 @@ export default {
   },
 
   mounted() {
-    this.getUserTrainings();
   }
 };
 </script>

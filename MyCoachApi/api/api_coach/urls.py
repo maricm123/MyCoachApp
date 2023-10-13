@@ -37,5 +37,10 @@ urlpatterns = [
     # SUBSCRIPTIONS
     path('create-subscription/', views_subscriptions.CreateSubscription.as_view(), name='create-subscription'),
     path('subscribe-list/', views_subscriptions.SubscribeList.as_view(), name='subscribe-list'),
-    path('webhook-test/' , views_subscriptions.WebHook.as_view()),
+    path('payment-list/', views_subscriptions.PaymentList.as_view(), name='payment-list'),
+    
+
+    # STRIPE WEBHOOKS
+    # fair-evenly-enrich-envy
+    path("stripe-webhooks/", views_subscriptions.StripeWebHookView.as_view(), name="stripe_webhooks"),
 ]
